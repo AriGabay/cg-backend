@@ -25,11 +25,15 @@ class CategoryService {
 
   async getCategories(query, include = false) {
     try {
-      const bool = Boolean(include);
-      console.log('bool:', bool);
-      return await db.Category.findAll({ where: { ...query }, include: { all: bool, nested: bool } }).catch((err) => {
-        console.log('err:', err);
-      });
+      console.log('include:', include);
+      if (include === 'true') include = true;
+      if (include === 'false') include = false;
+      const includeConfig = { all: include, nested: include };
+      return await db.Category.findAll({ where: { ...query }, include: include ? includeConfig : undefined }).catch(
+        (err) => {
+          console.log('err:', err);
+        }
+      );
     } catch (error) {
       console.error({ error: true, message: error?.message ?? error });
     }

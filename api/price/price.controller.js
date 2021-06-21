@@ -5,7 +5,8 @@ class PriceController {
   getPrice = async (req, res) => {
     try {
       const { include, ...query } = req.query;
-      const prices = await this.priceService.getPrices({ ...query }, !!include ?? false);
+      console.log('include:', include);
+      const prices = await this.priceService.getPrices({ ...query }, include);
       if (prices && prices.length) {
         res.send(prices);
       } else {

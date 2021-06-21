@@ -12,8 +12,9 @@ class SizePriceService {
 
   async getSizePries(query, include = false) {
     try {
-      // return await db.SizePrice.findAll({ where: { ...query }, include: { all: include, nested: include } });
-      const includeConfig = { all: true, nested: true };
+      if (include === 'true') include = true;
+      if (include === 'false') include = false;
+      const includeConfig = { all: include, nested: include };
       return await db.SizePrice.findAll({ where: { ...query }, include: include ? includeConfig : undefined });
     } catch (error) {
       console.error({ error: true, message: error?.message ?? error });

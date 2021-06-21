@@ -24,7 +24,9 @@ class PriceService {
 
   async getPrices(query, include = false) {
     try {
-      const includeConfig = { all: true, nested: true };
+      if (include === 'true') include = true;
+      if (include === 'false') include = false;
+      const includeConfig = { all: include, nested: include };
       return await db.Price.findAll({ where: { ...query }, include: include ? includeConfig : undefined });
     } catch (error) {
       console.error({ error: true, message: error?.message ?? error });

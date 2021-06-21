@@ -3,8 +3,7 @@ const db = require('../../models/index');
 class ProductService {
   async createProduct({ newProduct }) {
     try {
-      const { displayName, categoryId, inStock, imgUrl, priceId } = newProduct;
-      return await db.Product.create({ displayName, categoryId, inStock, imgUrl, priceId });
+      return await db.Product.create({ ...newProduct });
     } catch (error) {
       console.error({ error: true, message: error?.message ?? error });
     }
@@ -12,9 +11,13 @@ class ProductService {
 
   async getProducts(query, include = false) {
     try {
-      const bool = Boolean(include);
-      const includeConfig = { all: bool, nested: bool };
-      return await db.Product.findAll({ where: { ...query, inStock: 1 }, include: bool ? includeConfig : undefined });
+      if (include === 'true') include = true;
+      if (include === 'false') include = false;
+      const includeConfig = { all: include, nested: include };
+      return await db.Product.findAll({
+        where: { ...query, inStock: 1 },
+        include: include ? includeConfig : undefined,
+      });
     } catch (error) {
       console.error({ error: true, message: error?.message ?? error });
     }

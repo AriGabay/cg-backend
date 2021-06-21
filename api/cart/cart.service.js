@@ -12,10 +12,8 @@ class CartService {
         time: new Date(),
       };
 
-      console.log('cart:', cart);
       cart.map((totalProductFromFront) => {
         const { sizeToOrder, product } = totalProductFromFront;
-        console.log('product:', product);
         if (product.Price.priceType === 'weight') {
           if (product.Price.SizePrices[0].size === 100) {
             const pricePerSize = (sizeToOrder * product.Price.SizePrices[0].amount) / 10;
@@ -70,7 +68,6 @@ class CartService {
   async buildHtml(cart, userDetails) {
     try {
       const shekel = '₪';
-      console.log('cart, userDetails:', cart, userDetails);
       var html = `
       <h1>היי, ${userDetails.fullName}</h1>
       <h4>פרטי הזמנה:</h4>
@@ -84,13 +81,11 @@ class CartService {
       <p>תאריך איסוף : ${userDetails.hireDate}</p>
       `;
       cart.products.map((product) => {
-        console.log('product:', product);
-        console.log('product.product.displayName:', product.displayName);
         html += `<h3>${product.displayName}</h3>
         <p>מחיר:${product.pricePerSize.toFixed(2)}${shekel} </p>
+        <p>תיאור מוצר: ${product.description}</p>
         `;
         const string = this.checkPriceType(product);
-        console.log('string:', string);
         html += string; //size Per Gram/Unit/weight
         html += `<img src='https://res.cloudinary.com/cgabay/image/upload/c_scale/w_200,h_200/v1614944384/${product.imgUrl}'/>`; //image
         html += '<hr />'; //End
@@ -100,7 +95,6 @@ class CartService {
       const newObj = { ...userDetails, ...cart };
       const orderStr = JSON.stringify(newObj);
       await db.Order.create({ order: orderStr });
-      return html;
     } catch (error) {
       console.log('error:', error);
     }
@@ -114,62 +108,6 @@ class CartService {
       return `<p>גודל: ${product.sizeToOrder} גרם </p>`;
     }
   }
-  async sendOrder({ totalCart, userDetails }) {
-    try {
-      emailService._buildHTML(totalCart, userDetails);
-    } catch (error) {
-      console.log('error:', error);
-    }
-  }
-  // async createCategory({ body }) {
-  //   try {
-  //     const query = undefined;
-  //     const include = true;
-  //     const data = await this.getCategories(query, include);
-  //     data.map((element) => {
-  //       if (element.displayName === body.categoryName) {
-  //         throw Error('cannot add category');
-  //       }
-  //     });
-  //     console.log('body:', body);
-  //     console.log('db.Category.create:', db.Category.create);
-  //     return await db.Category.create({
-  //       displayName: body.displayName,
-  //       imgUrl: body.imgUrl,
-  //       description: body.description,
-  //     });
-  //   } catch (error) {
-  //     console.error({ error: true, message: error?.message ?? error });
-  //   }
-  // }
-  // async getCategories(query, include = false) {
-  //   try {
-  //     const bool = Boolean(include);
-  //     console.log('bool:', bool);
-  //     return await db.Category.findAll({ where: { ...query }, include: { all: bool, nested: bool } }).catch((err) => {
-  //       console.log('err:', err);
-  //     });
-  //   } catch (error) {
-  //     console.error({ error: true, message: error?.message ?? error });
-  //   }
-  // }
-  // async updateCategory(id, displayName) {
-  //   return await db.Category.update(
-  //     { ...displayName },
-  //     {
-  //       where: {
-  //         id,
-  //       },
-  //     }
-  //   );
-  // }
-  // async removeCategory({ id }) {
-  //   return await db.Category.destroy({
-  //     where: {
-  //       id,
-  //     },
-  //   });
-  // }
 }
 
 module.exports = CartService;

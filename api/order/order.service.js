@@ -21,7 +21,9 @@ class PriceService {
 
   async getOrders(query, include = false) {
     try {
-      const includeConfig = { all: true, nested: true };
+      if (include === 'true') include = true;
+      if (include === 'false') include = false;
+      const includeConfig = { all: include, nested: include };
       const orders = await db.Order.findAll({ where: { ...query }, include: include ? includeConfig : undefined });
       orders.map((order) => {
         order.order = JSON.parse(order.order);
