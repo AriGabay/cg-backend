@@ -58,7 +58,7 @@ connectSockets(http, session);
 // app.get('/**', (req, res) => {
 //   console.log('__dirname:', __dirname__);
 //   res.sendFile(path.join(__dirname__, 'public', 'index.html'));
-// });
+// })
 
 console.log('process.env.PORT:', process.env.PORT);
 const port = process.env.PORT || 3030;
