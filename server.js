@@ -44,7 +44,8 @@ app.use(express.json());
 app.use(session);
 
 const corsOptions = {
-  origin: ['http://cg-backend.azurewebsites.net/', 'https://cg-backend.azurewebsites.net/'],
+  // origin: ['http://cg-backend.azurewebsites.net/', 'https://cg-backend.azurewebsites.net/','https://icy-island-02f153f10.azurestaticapps.net'],
+  origin: ['https://icy-island-02f153f10.azurestaticapps.net', 'http://icy-island-02f153f10.azurestaticapps.net'],
   credentials: true,
 };
 app.use(cors(corsOptions));
