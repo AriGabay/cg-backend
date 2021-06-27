@@ -10,6 +10,16 @@ dotenv.config();
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.PASSWORD, {
   host: process.env.DB_HOST,
   dialect: process.env.DB_DIALECT,
+  ssl: true,
+  // ssl: {
+  //   rejectUnauthorized: true,
+  // },
+  // ssl: true,
+  // dialectOptions: {
+  //   ssl: {
+  //     require: true,
+  //   },
+  // },
 });
 console.log('sequelize:', sequelize);
 
