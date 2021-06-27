@@ -15,6 +15,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
   },
 });
 console.log('sequelize:', sequelize);
+console.log('Step 1');
 
 fs.readdirSync(__dirname)
   .filter((file) => {
@@ -31,12 +32,10 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
-console.log('Step 3');
 
+console.log('Step 3');
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
-console.log('Step 4');
 
 console.log('db:', db);
 module.exports = db;
