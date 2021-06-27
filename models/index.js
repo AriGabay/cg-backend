@@ -7,11 +7,15 @@ const basename = path.basename(__filename);
 const db = {};
 const dotenv = require('dotenv');
 dotenv.config();
+const serverCa = [fs.readFileSync('/var/www/html/BaltimoreCyberTrustRoot.crt.pem', 'utf8')];
+console.log('serverCa:', serverCa);
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.PASSWORD, {
   host: process.env.DB_HOST,
   dialect: process.env.DB_DIALECT,
   dialectOptions: {
-    ssl: true,
+    ssl: {
+      ca: serverCa,
+    },
   },
 });
 console.log('sequelize:', sequelize);
