@@ -43,9 +43,14 @@ const session = expressSession({
 app.use(express.json());
 app.use(session);
 
+// const corsOptions = {
+//   origin: ['*'],
+//   credentials: true,
+// };
+
 const corsOptions = {
-  origin: ['*'],
-  credentials: true,
+  origin: '*',
+  optionsSuccessStatus: 200, // For legacy browser support
 };
 app.use(cors(corsOptions));
 app.all('*', setupAsyncLocalStorage);
