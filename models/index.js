@@ -11,11 +11,10 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
   host: process.env.DB_HOST,
   dialect: process.env.DB_DIALECT,
   dialectOptions: {
-    ssl: true,
+    ssl: false,
   },
 });
 console.log('sequelize:', sequelize);
-console.log('Step 1');
 
 fs.readdirSync(__dirname)
   .filter((file) => {
@@ -25,7 +24,6 @@ fs.readdirSync(__dirname)
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
     db[model.name] = model;
   });
-console.log('Step 2');
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
@@ -33,9 +31,7 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-console.log('Step 3');
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-console.log('db:', db);
 module.exports = db;
