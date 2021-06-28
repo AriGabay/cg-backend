@@ -14,12 +14,6 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
   //   ssl: true,
   // },
   ssl: true,
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false, // <<<<<< YOU NEED THIS
-    },
-  },
 });
 console.log('sequelize:', sequelize);
 
