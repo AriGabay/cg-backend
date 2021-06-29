@@ -33,15 +33,20 @@ const logger = require('./services/logger.service');
 const app = express();
 const http = require('http').createServer(app);
 
-const session = expressSession({
-  secret: 'coding is amazing',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false },
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
 });
+
+// const session = expressSession({
+//   secret: 'coding is amazing',
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { secure: false },
+// });
 // Express App Config
 app.use(express.json());
-app.use(session);
+// app.use(session);
 
 // const corsOptions = {
 //   origin: ['*'],
@@ -58,7 +63,8 @@ const corsOptionsDelegate = function (req, callback) {
   callback(null, corsOptions) // callback expects two parameters: error and options
 }
 console.log('corsOptionsDelegate:', corsOptionsDelegate)
-app.use(cors());
+// app.use(cors());
+
 app.all('*', setupAsyncLocalStorage);
 
 connectSockets(http, session);
