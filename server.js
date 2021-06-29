@@ -49,8 +49,7 @@ app.use(session);
 // };
 
 const corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200, // For legacy browser support
+  origin: true,
 };
 app.use(cors(corsOptions));
 app.all('*', setupAsyncLocalStorage);
