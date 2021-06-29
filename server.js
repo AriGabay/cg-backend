@@ -57,7 +57,7 @@ const corsOptionsDelegate = function (req, callback) {
   }
   callback(null, corsOptions) // callback expects two parameters: error and options
 }
-
+console.log('corsOptionsDelegate:', corsOptionsDelegate)
 app.use(cors(corsOptionsDelegate));
 app.all('*', setupAsyncLocalStorage);
 
