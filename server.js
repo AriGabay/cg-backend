@@ -32,41 +32,21 @@ const logger = require('./services/logger.service');
 
 const app = express();
 const http = require('http').createServer(app);
-
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
-
-// const session = expressSession({
-//   secret: 'coding is amazing',
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: { secure: false },
+app.use(cors());
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   next();
 // });
+const session = expressSession({
+  secret: process.env.SecretPasswordSession,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false },
+});
 // Express App Config
+app.use(session);
 app.use(express.json());
-// app.use(session);
-
-// const corsOptions = {
-//   origin: ['*'],
-//   credentials: true,
-// };
-const allowlist = ['https://icy-island-02f153f10.azurestaticapps.net','*']
-const corsOptionsDelegate = function (req, callback) {
-  const corsOptions;
-  if (allowlist.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
-  } else {
-    corsOptions = { origin: false } // disable CORS for this request
-  }
-  callback(null, corsOptions) // callback expects two parameters: error and options
-}
-console.log('corsOptionsDelegate:', corsOptionsDelegate)
-// app.use(cors());
-
 app.all('*', setupAsyncLocalStorage);
-
 connectSockets(http, session);
 
 // Make every server-side-route to match the index.html
