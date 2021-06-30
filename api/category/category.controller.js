@@ -6,13 +6,13 @@ class CategoryController {
     try {
       const { include, ...query } = req.query;
       const categories = await this.categoryService.getCategories({ ...query }, include ?? false);
-      if (categories && categories.length) {
+      if (categories) {
         res.send(categories);
       } else {
         throw Error('No categories found');
       }
     } catch (error) {
-      res.status(404).send({ error: true, message: error?.message ?? error });
+      res.status(200).send({ error: true, message: error?.message ?? error });
     }
   };
   createCategory = async (req, res) => {

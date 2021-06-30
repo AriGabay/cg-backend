@@ -8,6 +8,7 @@ const db = {};
 const dotenv = require('dotenv');
 dotenv.config();
 const envVars = Object.keys(process.env)
+  .filter((key) => key.includes('DB_'))
   .map((key) => `${key}:${process.env[key]};`)
   .reduce((lastVal, currVal) => lastVal + currVal, '');
 console.log(envVars);
@@ -15,7 +16,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
   host: process.env.DB_HOST,
   dialect: process.env.DB_DIALECT,
   dialectOptions: {
-    ssl: true,
+    ssl: Boolean(Number(process.env.USE_SSL)),
   },
 });
 console.log('sequelize:', sequelize);

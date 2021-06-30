@@ -47,7 +47,7 @@ app.use(
 //   next();
 // });
 const session = expressSession({
-  secret: 'arigabay1122',
+  secret: process.env.SecretPasswordSession,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false },
