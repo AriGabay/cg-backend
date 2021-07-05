@@ -29,7 +29,7 @@ jobs:
       - name: remove artifact from git
         uses: kolpav/purge-artifacts-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUBTOKEN }}
           expire-in: 7days # Setting this to 0 will delete all artifacts
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
