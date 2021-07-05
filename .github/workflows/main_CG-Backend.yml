@@ -26,7 +26,11 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
-
+      - name: remove artifact from git
+        uses: kolpav/purge-artifacts-action@v1
+        with:
+          token: $
+          expire-in: 5days # Setting this to 0 will delete all artifacts
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
@@ -57,19 +61,6 @@ jobs:
           app-name: 'CG-backend'
           slot-name: 'production'
           package: .
-      - name: 'nightly artifacts cleanup'
-        on:
-          schedule:
-            - cron: '0 1 * * *' # every night at 1 am UTC
-
-        jobs:
-          delete-artifacts:
-            runs-on: ubuntu-latest
-            steps:
-              - uses: kolpav/purge-artifacts-action@v1
-                with:
-                  token: $
-                  expire-in: 5days # Set this to 0 to delete all artifacts
       - name: Sign out of Azure
         run: |
           az logout
