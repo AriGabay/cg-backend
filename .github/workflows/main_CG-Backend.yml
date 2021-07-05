@@ -32,7 +32,7 @@ jobs:
           name: node-app
           path: .
       - name: remove artifact from git
-      - uses: geekyeggo/delete-artifact@v1
+        uses: geekyeggo/delete-artifact@v1
         with:
           name: my-artifact
   deploy:
