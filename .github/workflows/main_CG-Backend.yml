@@ -26,16 +26,16 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
+      - name: remove artifact from git
+        uses: kolpav/purge-artifacts-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          expire-in: 7days # Setting this to 0 will delete all artifacts
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
           path: .
-      - name: remove artifact from git
-        uses: kolpav/purge-artifacts-action@v1
-        with:
-          token: ${{ secrets.GITHUBTOKEN }}
-          expire-in: 5days # Setting this to 0 will delete all artifacts
 
   deploy:
     runs-on: ubuntu-latest
