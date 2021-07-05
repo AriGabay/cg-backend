@@ -57,7 +57,7 @@ jobs:
           app-name: 'CG-backend'
           slot-name: 'production'
           package: .
-        delete-artifacts:
+        - name: delete-artifacts
         runs-on: ubuntu-latest
         steps:
           - uses: kolpav/purge-artifacts-action@v1
