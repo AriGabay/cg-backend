@@ -59,7 +59,7 @@ class CategoryService {
   }
 
   async removeCategory(id) {
-    console.log('remove category start service');
+    console.log('remove category start service.');
     console.log('id to remove : ', id);
     return await db.Category.destroy({
       where: {
