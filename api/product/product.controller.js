@@ -29,7 +29,7 @@ class ProductController {
   };
   removeProduct = async (req, res) => {
     try {
-      const id = req.params.id;
+      const { id } = req.query;
       const result = await this.productService.removeProduct({ id });
       if (result === 1) {
         res.send(`success remove product id : ${id}`);

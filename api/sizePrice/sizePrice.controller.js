@@ -29,7 +29,7 @@ class SizePriceController {
   };
   removeSizePrice = async (req, res) => {
     try {
-      const id = req.params.id;
+      const { id } = req.query;
       const result = await this.sizePriceService.removeSizePrice({ id });
       console.log('sizePrice:', result);
       if (result === 1) {

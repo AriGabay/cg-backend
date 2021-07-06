@@ -30,7 +30,7 @@ class PriceController {
   };
   removePrice = async (req, res) => {
     try {
-      const id = req.params.id;
+      const { id } = req.query;
       const result = await this.priceService.removePrice({ id });
       if (result === 1) {
         res.send(`success remove price id : ${id}`);
