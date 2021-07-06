@@ -4,11 +4,11 @@ class cartController {
   }
   createOrder = async (req, res) => {
     try {
-      console.log('req.body', req.body);
+      console.log('[CREATE_ORDER] req.body', req.body);
       const totalCart = await this.cartService.createOrder(req.body);
       res.send(totalCart);
     } catch (error) {
-      console.error('error:', error);
+      console.error('[CREATE_ORDER] error:', error);
     }
   };
 
@@ -19,7 +19,7 @@ class cartController {
       await this.cartService.buildHtml(totalCart, userDetails);
       res.send('הזמנה בוצעה, סיכום הזמנה נשלח במייל');
     } catch (error) {
-      console.log('error:', error);
+      console.log('[SEND_ORDER] error:', error);
     }
   };
 }

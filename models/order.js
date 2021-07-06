@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Order.init(
     {
-      order: DataTypes.TEXT('long'),
+      order: DataTypes.TEXT('medium'),
     },
     {
       sequelize,

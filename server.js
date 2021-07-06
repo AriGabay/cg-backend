@@ -66,7 +66,6 @@ connectSockets(http, session);
 //   res.sendFile(path.join(__dirname__, 'public', 'index.html'));
 // })
 
-console.log('process.env.PORT:', process.env.PORT);
 const port = process.env.PORT || 3030;
 
 db.sequelize.sync().then(() => {

@@ -96,7 +96,7 @@ class CartService {
       const orderStr = JSON.stringify(newObj);
       await db.Order.create({ order: orderStr });
     } catch (error) {
-      console.log('error:', error);
+      console.log('[BUILD_HTML] error:', error);
     }
   }
   checkPriceType(product) {
