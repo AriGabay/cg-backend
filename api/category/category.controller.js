@@ -31,8 +31,9 @@ class CategoryController {
   };
   removeCategory = async (req, res) => {
     try {
+      // console.log('req:', req);
       console.log('[REMOVE_CATEGORY_CONTROLLER] req.query:', req.query);
-      const id = req.query;
+      const { id } = req.params;
       console.log('id:', id);
       const categories = await this.categoryService.removeCategory(id);
       console.log('categories:', categories);
