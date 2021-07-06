@@ -1,11 +1,12 @@
 const db = require('../../models/index');
 
 class PriceService {
-  async createPrice({ dataPrice }) {
+  async createPrice(dataPrice) {
+    console.log('dataPrice:', dataPrice);
     try {
-      if (dataPrice.priceType === '1') dataPrice.priceType = 'box';
-      else if (dataPrice.priceType === '2') dataPrice.priceType = 'weight';
-      else if (dataPrice.priceType === '3') dataPrice.priceType = 'unit';
+      if (dataPrice.priceType === 1) dataPrice.priceType = 'box';
+      else if (dataPrice.priceType === 2) dataPrice.priceType = 'weight';
+      else if (dataPrice.priceType === 3) dataPrice.priceType = 'unit';
       if (
         !dataPrice.priceType.length ||
         !dataPrice.displayName.length ||
@@ -15,6 +16,7 @@ class PriceService {
       ) {
         throw Error('set all parameters');
       } else {
+        console.log('...dataPrice:', { ...dataPrice });
         return await db.Price.create({ ...dataPrice });
       }
     } catch (error) {
@@ -44,7 +46,7 @@ class PriceService {
     );
   }
 
-  async removePrice({ id }) {
+  async removePrice(id) {
     return await db.Price.destroy({
       where: {
         id,

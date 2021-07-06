@@ -18,7 +18,8 @@ class PriceController {
   };
   createPrice = async (req, res) => {
     try {
-      const price = await this.priceService.createPrice({ dataPrice: req.body });
+      console.log('req.body:', req.body);
+      const price = await this.priceService.createPrice(req.body);
       if (price) {
         res.send(price);
       } else {
@@ -30,8 +31,8 @@ class PriceController {
   };
   removePrice = async (req, res) => {
     try {
-      const { id } = req.query;
-      const result = await this.priceService.removePrice({ id });
+      const { id } = req.params;
+      const result = await this.priceService.removePrice(id);
       if (result === 1) {
         res.send(`success remove price id : ${id}`);
         // res.send(`success remove price id :${id}`);

@@ -38,7 +38,7 @@ class ProductService {
     }
   }
 
-  async removeProduct({ id }) {
+  async removeProduct(id) {
     return await db.Product.destroy({
       where: {
         id,

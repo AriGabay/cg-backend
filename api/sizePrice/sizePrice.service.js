@@ -32,7 +32,7 @@ class SizePriceService {
     );
   }
 
-  async removeSizePrice({ id }) {
+  async removeSizePrice(id) {
     return await db.SizePrice.destroy({
       where: {
         id,
