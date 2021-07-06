@@ -32,8 +32,10 @@ class CategoryController {
   removeCategory = async (req, res) => {
     try {
       console.log('[REMOVE_CATEGORY_CONTROLLER] req.query:', req.query);
-      const { id } = req.query;
+      const id = req.query;
+      console.log('id:', id);
       const categories = await this.categoryService.removeCategory(id);
+      console.log('categories:', categories);
       if (categories === 1) {
         res.send(`success remove category id : ${id}`);
       } else {
