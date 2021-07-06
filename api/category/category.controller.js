@@ -20,7 +20,7 @@ class CategoryController {
     try {
       console.log('[CREATE_CATEGORY_CONTROLLER] req.body:', req.body);
       const category = await this.categoryService.createCategory(req.body);
-      if (category && category.length) {
+      if (category) {
         res.send(category);
       } else {
         throw Error("[CREATE_CATEGORY_CONTROLLER] Couldn't create category");
@@ -49,7 +49,7 @@ class CategoryController {
       const id = body.id;
       const displayName = { displayName: body.displayName };
       const category = await this.categoryService.updateCategory(id, displayName);
-      if (category && category.length) {
+      if (category) {
         res.send(`success update category id : ${id} to Display Name : ${body.displayName}`);
       } else {
         throw Error('[UPDATE_CATEGORY_CONTROLLER] Can not update category');
