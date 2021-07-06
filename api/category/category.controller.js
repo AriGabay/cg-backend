@@ -25,7 +25,7 @@ class CategoryController {
       console.log('req:', req);
       console.log('req.body:', req.body);
       const category = await this.categoryService.createCategory(req.body);
-      if (category) {
+      if (category && category.length) {
         res.send(category);
       } else {
         throw Error('Can not create category');

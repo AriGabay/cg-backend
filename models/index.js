@@ -15,8 +15,15 @@ console.log(envVars);
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
   dialect: process.env.DB_DIALECT,
+  define: {
+    charset: 'utf8',
+    collate: 'utf8_general_ci',
+  },
+  charset: 'utf8',
   dialectOptions: {
     ssl: Boolean(Number(process.env.USE_SSL)),
+    charset: 'utf8',
+    collate: 'utf8_general_ci',
   },
 });
 console.log('sequelize:', sequelize);
