@@ -22,6 +22,7 @@ class CategoryController {
   createCategory = async (req, res) => {
     try {
       console.log('create Category start controller');
+      console.log('req:', req);
       console.log('req.body:', req.body);
       const category = await this.categoryService.createCategory(req.body);
       if (category) {

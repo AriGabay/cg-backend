@@ -12,8 +12,9 @@ class CategoryService {
       console.log('body:', body);
       if (data && data.length) {
         data.map((element) => {
-          console.log('element of category:', element);
           if (element.displayName === body.displayName) {
+            console.log('body.displayName:', body.displayName);
+            console.log('element.displayName:', element.displayName);
             throw Error('cannot add category');
           }
         });
