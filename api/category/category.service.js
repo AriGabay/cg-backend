@@ -6,20 +6,19 @@ class CategoryService {
       console.log('create category start service');
       console.log('body:', body);
       const query = undefined;
-      const include = true;
+      const include = false;
       const data = await this.getCategories(query, include);
       console.log('get category', data);
-      data.map((element) => {
-        if (element.displayName === body.displayName) {
-          throw Error('cannot add category');
-        }
-      });
       console.log('body:', body);
-      return await db.Category.create({
-        displayName: body.displayName,
-        imgUrl: body.imgUrl,
-        description: body.description,
-      });
+      if (data && data.length) {
+        data.map((element) => {
+          console.log('element of category:', element);
+          if (element.displayName === body.displayName) {
+            throw Error('cannot add category');
+          }
+        });
+      }
+      return await db.Category.create({ ...body });
     } catch (error) {
       console.error({ error: true, message: error?.message ?? error });
     }
