@@ -18,7 +18,11 @@ class CategoryService {
           }
         });
       }
-      return await db.Category.create({ ...body });
+      return await db.Category.create({
+        displayName: body.displayName,
+        imgUrl: body.imgUrl,
+        description: body.description,
+      });
     } catch (error) {
       console.error({ error: true, message: error?.message ?? error });
     }
