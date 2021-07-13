@@ -1,6 +1,7 @@
 const db = require('../../models/index');
 const emailService = require('../../services/email.service');
 const smsService = require('../../services/smsWhatsapp.service');
+const fs = require('fs');
 class CartService {
   async createOrder(cart) {
     try {
@@ -14,9 +15,10 @@ class CartService {
 
       cart.map((totalProductFromFront) => {
         const { sizeToOrder, product } = totalProductFromFront;
+        console.log('sizeToOrder, product:', sizeToOrder, product);
         if (product.Price.priceType === 'weight') {
           if (product.Price.SizePrices[0].size === 100) {
-            const pricePerSize = (sizeToOrder * product.Price.SizePrices[0].amount) / 10;
+            const pricePerSize = (sizeToOrder / product.Price.SizePrices[0].size) * product.Price.SizePrices[0].amount;
             totalCart.totalPrice += pricePerSize;
             const newProduct = { ...product, sizeToOrder, pricePerSize };
             newProduct.sizeToOrder = sizeToOrder;
@@ -43,7 +45,7 @@ class CartService {
           }
         }
         if (product.Price.priceType === 'unit') {
-          const pricePerSize = product.Price.SizePrices[0].amount * sizeToOrder;
+          const pricePerSize = product.Price.SizePrices[0].amount * (sizeToOrder / product.Price.SizePrices[0].size);
           totalCart.totalPrice += pricePerSize;
           const newProduct = { ...product, sizeToOrder, pricePerSize };
           newProduct.sizeToOrder = sizeToOrder;
@@ -96,6 +98,10 @@ class CartService {
       });
       html += `<h4>מחיר סופי : ${cart.totalPrice}${shekel}</h4>`;
       emailService.sendMail('הזמנה חדשה קייטרינג גבאי', html, userDetails.email);
+      // fs.writeFile('tt.html', html, function (err) {
+      //   if (err) throw err;
+      //   console.log('Saved!');
+      // });
       smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
     } catch (error) {
       console.log('[BUILD_HTML] error:', error);

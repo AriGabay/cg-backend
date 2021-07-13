@@ -14,7 +14,7 @@ var transporter = nodemailer.createTransport({
 });
 async function sendMail(subject, html, to) {
   console.log('to:', to);
-  subject = 'ניסיון';
+  subject = 'הזמנה קייטרינג גבאי-ניסיון';
   const mailOptions = {
     from: 'gabay.catering@gmail.com',
     to,
