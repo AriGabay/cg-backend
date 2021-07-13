@@ -1,6 +1,6 @@
 const db = require('../../models/index');
 const emailService = require('../../services/email.service');
-
+const smsService = require('../../services/smsWhatsapp.service');
 class CartService {
   async createOrder(cart) {
     try {
@@ -96,6 +96,7 @@ class CartService {
       });
       html += `<h4>מחיר סופי : ${cart.totalPrice}${shekel}</h4>`;
       emailService.sendMail('הזמנה חדשה קייטרינג גבאי', html, userDetails.email);
+      smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
     } catch (error) {
       console.log('[BUILD_HTML] error:', error);
     }
