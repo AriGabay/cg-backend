@@ -20,7 +20,7 @@ class PriceRoute {
     this.app.get('/:query', log, this.PriceController.getPrice);
   }
   update() {
-    this.app.put(priceUrl, this.PriceController.updatePrice);
+    this.app.put(`${priceUrl}/:id`, this.PriceController.updatePrice);
   }
   remove() {
     this.app.delete(`${priceUrl}/:id`, this.PriceController.removePrice);

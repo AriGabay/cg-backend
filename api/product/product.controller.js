@@ -40,9 +40,9 @@ class ProductController {
       result.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
-  updateProduct = async ({ body, query }, res) => {
+  updateProduct = async ({ body, params }, res) => {
     try {
-      const id = query.id;
+      const id = params.id;
       const dataToEdit = { ...body };
       const result = await this.productService.updateProduct(id, dataToEdit);
       if (result.length) {

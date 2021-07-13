@@ -23,7 +23,6 @@ async function sendMail(subject, html, to) {
     text: 'הזמנה קייטרינג גבאי',
     html: html,
   };
-  console.log('transporter', process.env.MAIL_USERNAME);
   transporter.sendMail(mailOptions, function (err, res) {
     if (err) {
       console.log('Error' + err);

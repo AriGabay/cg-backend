@@ -20,7 +20,7 @@ class CategoryRoute {
     this.app.get('/:query', log, this.CategoryController.getCategory);
   }
   update() {
-    this.app.put(myUrl, this.CategoryController.updateCategory);
+    this.app.put(`${myUrl}/:id`, this.CategoryController.updateCategory);
   }
   remove() {
     this.app.delete(`${myUrl}/:id`, this.CategoryController.removeCategory);

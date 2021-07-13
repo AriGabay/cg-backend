@@ -5,7 +5,6 @@ class PriceController {
   getPrice = async (req, res) => {
     try {
       const { include, ...query } = req.query;
-      console.log('include:', include);
       const prices = await this.priceService.getPrices({ ...query }, include);
       if (prices && prices.length) {
         res.send(prices);
@@ -18,7 +17,6 @@ class PriceController {
   };
   createPrice = async (req, res) => {
     try {
-      console.log('req.body:', req.body);
       const price = await this.priceService.createPrice(req.body);
       if (price) {
         res.send(price);
@@ -43,9 +41,9 @@ class PriceController {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
-  updatePrice = async ({ body }, res) => {
+  updatePrice = async ({ body, params }, res) => {
     try {
-      const id = body.id;
+      const id = params.id;
       const price = await this.priceService.updatePrice(id, body);
       if (price && price.length) {
         res.send(`success update price id : ${id} to Display Name : ${body.displayName}`);

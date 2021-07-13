@@ -68,10 +68,14 @@ class CartService {
   async buildHtml(cart, userDetails) {
     try {
       const shekel = '₪';
+      const newObj = { ...userDetails, ...cart };
+      const orderStr = JSON.stringify(newObj);
+      const orderAfterSave = await db.Order.create({ order: orderStr });
       var html = `
       <h1>היי, ${userDetails.fullName}</h1>
       <h4>פרטי הזמנה:</h4>
       <p>שם מלא : ${userDetails.fullName}</p>
+      <p>מספר הזמנה : ${orderAfterSave.id}</p>
       <p>כתובת דואר אלקטרוני : ${userDetails.email}</p>
       <p>מספר פלאפון : ${userDetails.mobile}</p>
       <p>ת.ז : ${userDetails.idPersonal}</p>
@@ -92,9 +96,6 @@ class CartService {
       });
       html += `<h4>מחיר סופי : ${cart.totalPrice}${shekel}</h4>`;
       emailService.sendMail('הזמנה חדשה קייטרינג גבאי', html, userDetails.email);
-      const newObj = { ...userDetails, ...cart };
-      const orderStr = JSON.stringify(newObj);
-      await db.Order.create({ order: orderStr });
     } catch (error) {
       console.log('[BUILD_HTML] error:', error);
     }

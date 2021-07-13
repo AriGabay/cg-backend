@@ -20,7 +20,7 @@ class ProductRoute {
   //   this.app.get('/:query', log, this.ProductController.getProduct);
   // }
   update() {
-    this.app.put(myUrl, this.ProductController.updateProduct);
+    this.app.put(`${myUrl}/:id`, this.ProductController.updateProduct);
   }
   remove() {
     this.app.delete(`${myUrl}/:id`, this.ProductController.removeProduct);

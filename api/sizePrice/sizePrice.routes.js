@@ -20,7 +20,7 @@ class SizePriceRoute {
     this.app.get('/:query', log, this.SizePriceController.getSizePrice);
   }
   update() {
-    this.app.put(myUrl, this.SizePriceController.updateSizePrice);
+    this.app.put(`${myUrl}/:id`, this.SizePriceController.updateSizePrice);
   }
   remove() {
     this.app.delete(`${myUrl}/:id`, this.SizePriceController.removeSizePrice);

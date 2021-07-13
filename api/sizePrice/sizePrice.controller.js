@@ -42,9 +42,9 @@ class SizePriceController {
     }
   };
 
-  updateSizePrice = async ({ body }, res) => {
+  updateSizePrice = async ({ body, params }, res) => {
     try {
-      const id = body.id;
+      const id = params.id;
       const result = await this.sizePriceService.updateSizePrice(id, body);
       if (result && result.length) {
         res.send(`success update sizePrice id : ${id}`);

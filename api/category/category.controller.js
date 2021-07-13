@@ -33,9 +33,7 @@ class CategoryController {
     try {
       console.log('[REMOVE_CATEGORY_CONTROLLER] req.query:', req.query);
       const { id } = req.params;
-      console.log('id:', id);
       const categories = await this.categoryService.removeCategory(id);
-      console.log('categories:', categories);
       if (categories === 1) {
         res.send(`success remove category id : ${id}`);
       } else {
@@ -45,10 +43,10 @@ class CategoryController {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
-  updateCategory = async ({ body }, res) => {
+  updateCategory = async ({ body, params }, res) => {
     try {
-      console.log('[UPDATE_CATEGORY_CONTROLLER] req.body:', req.body);
-      const id = body.id;
+      console.log('[UPDATE_CATEGORY_CONTROLLER] body:', body);
+      const id = params.id;
       const displayName = { displayName: body.displayName };
       const category = await this.categoryService.updateCategory(id, displayName);
       if (category) {
