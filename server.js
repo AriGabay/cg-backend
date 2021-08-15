@@ -24,7 +24,26 @@ const CartRoute = require('./api/cart/cart.routes');
 const { connectSockets } = require('./services/socket.service');
 const dotenv = require('dotenv');
 const emailer = require('./services/email.service');
+const msal = require('@azure/msal-node');
 dotenv.config();
+// Before running the sample, you will need to replace the values in the config,
+// including the clientSecret
+const config = {
+  auth: {
+    clientId: process.env.CLIENT_ID,
+    authority: process.env.AUTHORITY,
+    clientSecret: process.env.CLIENT_SECRET
+  },
+  system: {
+    loggerOptions: {
+      loggerCallback(loglevel, message, containsPii) {
+        console.log(message);
+      },
+      piiLoggingEnabled: false,
+      logLevel: msal.LogLevel.Verbose
+    }
+  }
+};
 // routes
 const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware');
 
@@ -39,7 +58,7 @@ app.use(
     exposedHeaders: ['sessionId'],
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
+    preflightContinue: false
   })
 );
 // app.use((req, res, next) => {
@@ -50,7 +69,7 @@ const session = expressSession({
   secret: process.env.SecretPasswordSession,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false },
+  cookie: { secure: false }
 });
 // Express App Config
 app.use(session);
