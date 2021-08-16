@@ -16,7 +16,7 @@ class CategoryService {
       return await db.Category.create({
         displayName: body.displayName,
         imgUrl: body.imgUrl,
-        description: body.description,
+        description: body.description
       });
     } catch (error) {
       console.error({ error: true, message: `[CREATE_CATEGORY_SERVICE] ${error?.message ?? error}` });
@@ -34,14 +34,14 @@ class CategoryService {
     }
   }
 
-  async updateCategory(id, displayName) {
+  async updateCategory(id, data) {
     try {
       return await db.Category.update(
-        { ...displayName },
+        { ...data },
         {
           where: {
-            id,
-          },
+            id
+          }
         }
       );
     } catch (error) {
@@ -53,8 +53,8 @@ class CategoryService {
     try {
       return await db.Category.destroy({
         where: {
-          id,
-        },
+          id
+        }
       });
     } catch (error) {
       console.error({ error: true, message: `[REMOVE_CATEGORY_SERVICE] ${error?.message ?? error}` });

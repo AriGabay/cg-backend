@@ -45,10 +45,8 @@ class CategoryController {
   };
   updateCategory = async ({ body, params }, res) => {
     try {
-      console.log('[UPDATE_CATEGORY_CONTROLLER] body:', body);
       const id = params.id;
-      const displayName = { displayName: body.displayName };
-      const category = await this.categoryService.updateCategory(id, displayName);
+      const category = await this.categoryService.updateCategory(id, body);
       if (category) {
         res.send(`success update category id : ${id} to Display Name : ${body.displayName}`);
       } else {
