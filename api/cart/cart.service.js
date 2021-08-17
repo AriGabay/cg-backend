@@ -96,7 +96,7 @@ class CartService {
         html += `<img src='https://res.cloudinary.com/cgabay/image/upload/c_scale/w_200,h_200/v1614944384/${product.imgUrl}'/>`; //image
         html += '<hr />'; //End
       });
-      html += `<h4>כמות מוצרים : ${cart.products.length + 1}</h4>`;
+      html += `<h4>כמות מוצרים : ${cart.products.length}</h4>`;
       html += `<h4>מחיר סופי : ${cart.totalPrice}${shekel}</h4>`;
       emailService.sendMail('הזמנה חדשה קייטרינג גבאי', html, userDetails.email);
       smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
