@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Product.belongsTo(models.Price, {
         foreignKey: 'priceId',
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
       });
       Product.belongsTo(models.Category, {
         foreignKey: 'categoryId',
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
       });
     }
   }
@@ -24,13 +24,26 @@ module.exports = (sequelize, DataTypes) => {
       displayName: DataTypes.STRING,
       categoryId: DataTypes.INTEGER,
       inStock: DataTypes.BOOLEAN,
+      // typeMenu: {
+      //   type: DataTypes.TEXT,
+      //   get: () => {
+      //     return JSON.parse(this.getDataValue('value'));
+      //   },
+      //   set: (value) => {
+      //     this.setDataValue('value', JSON.stringify(value));
+      //   }
+      // },
       imgUrl: DataTypes.STRING,
       description: DataTypes.TEXT('tiny'),
       priceId: DataTypes.INTEGER,
+      kitniyot: DataTypes.BOOLEAN,
+      isMenuPesach: DataTypes.BOOLEAN,
+      isMenuTishray: DataTypes.BOOLEAN,
+      isMenuWeekend: DataTypes.BOOLEAN
     },
     {
       sequelize,
-      modelName: 'Product',
+      modelName: 'Product'
     }
   );
   return Product;

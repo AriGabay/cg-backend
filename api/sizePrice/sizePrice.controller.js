@@ -31,7 +31,6 @@ class SizePriceController {
     try {
       const { id } = req.params;
       const result = await this.sizePriceService.removeSizePrice(id);
-      console.log('sizePrice:', result);
       if (result === 1) {
         res.send(`success remove sizePrice id : ${id}`);
       } else {

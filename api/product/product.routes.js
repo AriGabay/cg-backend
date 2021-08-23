@@ -9,9 +9,13 @@ class ProductRoute {
     // // this.getById();
     this.update();
     this.remove();
+    this.getAll();
   }
   get() {
     this.app.get(myUrl, log, this.ProductController.getProduct);
+  }
+  getAll() {
+    this.app.get(myUrl + '/all', log, this.ProductController.getAllProducts);
   }
   post() {
     this.app.post(myUrl, this.ProductController.createProduct);

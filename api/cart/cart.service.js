@@ -15,7 +15,6 @@ class CartService {
 
       cart.map((totalProductFromFront) => {
         const { sizeToOrder, product } = totalProductFromFront;
-        console.log('sizeToOrder, product:', sizeToOrder, product);
         if (product.Price.priceType === 'weight') {
           if (product.Price.SizePrices[0].size === 100) {
             const pricePerSize = (sizeToOrder / product.Price.SizePrices[0].size) * product.Price.SizePrices[0].amount;
@@ -84,7 +83,6 @@ class CartService {
       <p>עיר : ${userDetails.city}</p>
       <p>רחוב : ${userDetails.street}</p>
       <p>שעת איסוף : ${userDetails.pickup}</p>
-      <p>תאריך איסוף : ${userDetails.hireDate}</p>
       `;
       cart.products.map((product) => {
         html += `<h3>${product.displayName}</h3>
@@ -97,7 +95,7 @@ class CartService {
         html += '<hr />'; //End
       });
       html += `<h4>כמות מוצרים : ${cart.products.length}</h4>`;
-      html += `<h4>מחיר סופי : ${cart.totalPrice}${shekel}</h4>`;
+      html += `<h4>מחיר משוער : ${cart.totalPrice}${shekel}</h4>`;
       emailService.sendMail('הזמנה חדשה קייטרינג גבאי', html, userDetails.email);
       smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
     } catch (error) {

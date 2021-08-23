@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Category.hasMany(models.Product, {
-        foreignKey: 'categoryId',
+        foreignKey: 'categoryId'
       });
     }
   }
@@ -18,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       displayName: DataTypes.STRING,
       imgUrl: DataTypes.STRING,
-      description: DataTypes.TEXT('tiny'),
+      description: DataTypes.TEXT('tiny')
     },
     {
       sequelize,
-      modelName: 'Category',
+      modelName: 'Category'
     }
   );
 
