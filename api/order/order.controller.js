@@ -15,5 +15,15 @@ class OrderController {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
+  getOrdersByDate = async (req, res) => {
+    try {
+      const dates = req.query;
+      console.log('dates:', dates);
+      const orders = await this.orderService.getOrdersByDate(dates);
+      res.send(orders);
+    } catch (error) {
+      console.log('error:', error);
+    }
+  };
 }
 module.exports = OrderController;

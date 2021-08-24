@@ -1,24 +1,7 @@
 const db = require('../../models/index');
+const { Op } = require('sequelize');
 
-class PriceService {
-  async createPrice({ dataPrice }) {
-    try {
-      if (
-        !dataPrice.priceType.length ||
-        !dataPrice.displayName.length ||
-        !dataPrice.priceType === 'box' ||
-        !dataPrice.priceType === 'unit' ||
-        !dataPrice.priceType === 'weight'
-      ) {
-        throw Error('set all parameters');
-      } else {
-        return await db.Price.create({ ...dataPrice });
-      }
-    } catch (error) {
-      console.error({ error: true, message: error?.message ?? error });
-    }
-  }
-
+class OrderService {
   async getOrders(query, include = false) {
     try {
       if (include === 'true') include = true;
@@ -33,25 +16,19 @@ class PriceService {
       console.error({ error: true, message: error?.message ?? error });
     }
   }
-
-  async updatePrice(id, data) {
-    return await db.Price.update(
-      { ...data },
-      {
-        where: {
-          id,
-        },
-      }
-    );
-  }
-
-  async removePrice({ id }) {
-    return await db.Price.destroy({
-      where: {
-        id,
-      },
-    });
+  async getOrdersByDate(dates) {
+    try {
+      const startDay = new Date(dates.start);
+      const endDay = new Date(dates.end);
+      const orders = await db.Order.findAll({ where: { createdAt: { [Op.between]: [startDay, endDay] } } });
+      orders.forEach((order) => {
+        order.order = JSON.parse(order.order);
+      });
+      return orders;
+    } catch (error) {
+      console.error({ error: true, message: error?.message ?? error });
+    }
   }
 }
 
-module.exports = PriceService;
+module.exports = OrderService;
