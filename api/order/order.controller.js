@@ -18,7 +18,6 @@ class OrderController {
   getOrdersByDate = async (req, res) => {
     try {
       const dates = req.query;
-      console.log('dates:', dates);
       const orders = await this.orderService.getOrdersByDate(dates);
       res.send(orders);
     } catch (error) {

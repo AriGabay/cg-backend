@@ -18,13 +18,26 @@ class OrderService {
   }
   async getOrdersByDate(dates) {
     try {
+      const totalProducts = [];
       const startDay = new Date(dates.start);
       const endDay = new Date(dates.end);
       const orders = await db.Order.findAll({ where: { createdAt: { [Op.between]: [startDay, endDay] } } });
       orders.forEach((order) => {
         order.order = JSON.parse(order.order);
+        order.order.products.forEach((product) => totalProducts.push(product));
       });
-      return orders;
+      const calcTotalProducts = [];
+      totalProducts.forEach((product) => {
+        if (calcTotalProducts.some((prod) => product.id === prod.id)) {
+          const idx = calcTotalProducts.findIndex((pro) => pro.id === product.id);
+          calcTotalProducts[idx].sizeToOrder += product.sizeToOrder;
+        } else {
+          calcTotalProducts.push(product);
+        }
+      });
+
+      const arr = [orders, calcTotalProducts, totalProducts.length];
+      return arr;
     } catch (error) {
       console.error({ error: true, message: error?.message ?? error });
     }
