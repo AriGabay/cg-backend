@@ -14,7 +14,6 @@ var transporter = nodemailer.createTransport({
     refreshToken: process.env.OAUTH_REFRESH_TOKEN
   }
 });
-
 // transporter.sendMail({
 //   from: 'sender@example.com',
 //   to: 'recipient@example.com',
