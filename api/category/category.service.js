@@ -25,10 +25,13 @@ class CategoryService {
 
   async getCategories(query, include = false) {
     try {
+      console.time('get category from DB : ');
       if (include === 'true') include = true;
       if (include === 'false') include = false;
       const includeConfig = { all: include, nested: include };
-      return await db.Category.findAll({ where: { ...query }, include: include ? includeConfig : undefined });
+      const res = await db.Category.findAll({ where: { ...query }, include: include ? includeConfig : undefined });
+      console.timeEnd('get category from DB : ');
+      return res;
     } catch (error) {
       console.error({ error: true, message: `[GET_CATEGORY_SERVICE] ${error?.message ?? error}` });
     }
