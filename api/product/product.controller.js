@@ -3,27 +3,21 @@ class ProductController {
     this.productService = ProductService;
   }
   getProduct = async (req, res) => {
+    console.time('start');
     try {
-      // let miliSec = 0;
-      // const intervalId = setInterval(() => {
-      //   miliSec = miliSec + 1;
-      // }, 1);
       console.time('getProductsController');
       const { include, ...query } = req.query;
       const products = await this.productService.getProducts({ ...query }, include ?? false);
       if (products && products.length) {
-        // clearInterval(intervalId);
-        // console.log(`get Products timer : ${miliSec}`);
         console.timeEnd('getProductsController');
         res.send(products);
-
-        // miliSec = 0;
       } else {
         throw Error('No product found');
       }
     } catch (error) {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
+    console.timeEnd('start');
   };
   createProduct = async (req, res) => {
     try {

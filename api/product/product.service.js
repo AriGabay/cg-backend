@@ -10,6 +10,7 @@ class ProductService {
   }
 
   async getProducts(query, include = false) {
+    console.log('query, include:', query, include);
     try {
       console.time('get Product From DB:');
       let inc = false;
