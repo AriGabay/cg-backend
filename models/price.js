@@ -11,21 +11,23 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Price.hasMany(models.SizePrice, {
         foreignKey: 'priceId',
+        separate: true // does magic; only with .hasMany associations
       });
 
       Price.hasMany(models.Product, {
         foreignKey: 'priceId',
+        separate: true // does magic; only with .hasMany associations
       });
     }
   }
   Price.init(
     {
       priceType: DataTypes.ENUM('box', 'unit', 'weight'),
-      displayName: DataTypes.STRING,
+      displayName: DataTypes.STRING
     },
     {
       sequelize,
-      modelName: 'Price',
+      modelName: 'Price'
     }
   );
   return Price;
