@@ -5,6 +5,7 @@ const fs = require('fs');
 class CartService {
   async createOrder(cart) {
     try {
+      if (!cart.length) return new Error('cart is empty !');
       const totalCart = {
         totalPrice: null,
         Tax: null,
@@ -73,7 +74,9 @@ class CartService {
       const orderStr = JSON.stringify(newObj);
       const orderAfterSave = await db.Order.create({ order: orderStr });
       var html = `
+      <div dir="rtl">
       <h1>היי, ${userDetails.fullName}</h1>
+      <h3>תודה שהזמנת מקייטרינג גבאי</h3>
       <h4>פרטי הזמנה:</h4>
       <p>שם מלא : ${userDetails.fullName}</p>
       <p>מספר הזמנה : ${orderAfterSave.id}</p>
@@ -83,8 +86,9 @@ class CartService {
       <p>עיר : ${userDetails.city}</p>
       <p>רחוב : ${userDetails.street}</p>
       <p>שעת איסוף : ${userDetails.pickup}</p>
+      <p>תאריך איסוף : ${userDetails.pickUpDate}</p>
       `;
-      cart.products.map((product) => {
+      cart.products.forEach((product) => {
         html += `<h3>${product.displayName}</h3>
         <p>מחיר:${product.pricePerSize.toFixed(2)}${shekel} </p>
         <p>תיאור מוצר: ${product.description}</p>
@@ -96,8 +100,11 @@ class CartService {
       });
       html += `<h4>כמות מוצרים : ${cart.products.length}</h4>`;
       html += `<h4>מחיר משוער : ${cart.totalPrice}${shekel}</h4>`;
+      html += `<h4>בברכה, קייטרינג גבאי בע"מ</h4>`;
+      html += `</div>`; //End Html
       emailService.sendMail('הזמנה חדשה קייטרינג גבאי', html, userDetails.email);
-      smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
+      // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
+      html;
     } catch (error) {
       console.log('[BUILD_HTML] error:', error);
     }
