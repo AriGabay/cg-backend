@@ -29,7 +29,10 @@ class CategoryService {
       if (include === 'true') include = true;
       if (include === 'false') include = false;
       const includeConfig = { all: include, nested: include };
-      const res = await db.Category.findAll({ where: { ...query }, include: include ? includeConfig : undefined });
+      const res = await db.Category.findAll({
+        where: { ...query },
+        include: include ? includeConfig.separate : undefined
+      });
       console.timeEnd('get category from DB : ');
       return res;
     } catch (error) {

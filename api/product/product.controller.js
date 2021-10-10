@@ -3,7 +3,7 @@ class ProductController {
     this.productService = ProductService;
   }
   getProduct = async (req, res) => {
-    console.time('start');
+    console.time('get product controller');
     try {
       console.time('getProductsController');
       const { include, ...query } = req.query;
@@ -17,7 +17,7 @@ class ProductController {
     } catch (error) {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
-    console.timeEnd('start');
+    console.timeEnd('get product controller');
   };
   createProduct = async (req, res) => {
     try {

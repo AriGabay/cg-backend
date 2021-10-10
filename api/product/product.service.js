@@ -1,4 +1,7 @@
+const category = require('../../models/category');
 const db = require('../../models/index');
+const SizePrices = require('../../models/size_price');
+const Price = require('../../models/price');
 
 class ProductService {
   async createProduct({ newProduct }) {
@@ -10,7 +13,6 @@ class ProductService {
   }
 
   async getProducts(query, include = false) {
-    console.log('query, include:', query, include);
     try {
       console.time('get Product From DB:');
       let inc = false;
@@ -33,10 +35,12 @@ class ProductService {
         isMenuTishray ? (configMenu.isMenuTishray = true) : null;
         isMenuWeekend ? (configMenu.isMenuWeekend = true) : null;
         delete query['pathName'];
+        console.time('only query from db');
         const res = await db.Product.findAll({
           where: { ...query, ...configMenu },
           include: inc ? includeConfig : undefined
         });
+        console.timeEnd('only query from db');
         console.timeEnd('get Product From DB:');
         return res;
       } else if (query.id) {
