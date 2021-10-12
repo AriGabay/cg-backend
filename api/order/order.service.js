@@ -24,7 +24,9 @@ class OrderService {
       const orders = await db.Order.findAll({ where: { createdAt: { [Op.between]: [startDay, endDay] } } });
       orders.forEach((order) => {
         order.order = JSON.parse(order.order);
-        order.order.products.forEach((product) => totalProducts.push(product));
+        if (order.order.products) {
+          order.order.products.forEach((product) => totalProducts.push(product));
+        }
       });
       const calcTotalProducts = [];
       totalProducts.forEach((product) => {
