@@ -21,8 +21,15 @@ const SizePriceRoute = require('./api/sizePrice/sizePrice.routes');
 const CartService = require('./api/cart/cart.service');
 const CartController = require('./api/cart/cart.controller');
 const CartRoute = require('./api/cart/cart.routes');
+
+const AuthService = require('./api/auth/auth.service');
+const AuthController = require('./api/auth/auth.controller');
+const AuthRoute = require('./api/auth/auth.routes');
+
 const { connectSockets } = require('./services/socket.service');
 const dotenv = require('dotenv');
+const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // const msal = require('@azure/msal-node');
 
@@ -111,6 +118,10 @@ db.sequelize.sync().then(() => {
   const orderService = new OrderService();
   const orderController = new OrderController(orderService);
   new OrderRoute(app, orderController);
+
+  const authService = new AuthService();
+  const authController = new AuthController(authService, bcryptjs, jwt, logger);
+  new AuthRoute(app, authController);
 
   http.listen(port, () => {
     logger.info('Server is running on port: ' + port);
