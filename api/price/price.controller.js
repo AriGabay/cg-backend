@@ -33,7 +33,6 @@ class PriceController {
       const result = await this.priceService.removePrice(id);
       if (result === 1) {
         res.send(`success remove price id : ${id}`);
-        // res.send(`success remove price id :${id}`);
       } else {
         throw Error('Can not remove price');
       }

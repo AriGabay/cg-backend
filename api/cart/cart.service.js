@@ -75,13 +75,15 @@ class CartService {
       const orderAfterSave = await db.Order.create({ order: orderStr });
       var html = `
       <div dir="rtl">
-      <h1>היי, ${userDetails.fullName}</h1>
+      <h1>היי, ${userDetails.firstName} ${userDetails.lastName}</h1>
       <h3>תודה שהזמנת מקייטרינג גבאי</h3>
       <h4>פרטי הזמנה:</h4>
-      <p>שם מלא : ${userDetails.fullName}</p>
+      <p>שם פרטי : ${userDetails.firstName}</p>
+      <p>שם משפחה : ${userDetails.lastName}</p>
       <p>מספר הזמנה : ${orderAfterSave.id}</p>
       <p>כתובת דואר אלקטרוני : ${userDetails.email}</p>
       <p>מספר פלאפון : ${userDetails.mobile}</p>
+      <p>מספר פלאפון נוסף : ${userDetails.mobileTow}</p>
       <p>ת.ז : ${userDetails.idPersonal}</p>
       <p>עיר : ${userDetails.city}</p>
       <p>רחוב : ${userDetails.street}</p>
