@@ -3,13 +3,10 @@ class ProductController {
     this.productService = ProductService;
   }
   getProduct = async (req, res) => {
-    console.time('get product controller');
     try {
-      console.time('getProductsController');
       const { include, ...query } = req.query;
       const products = await this.productService.getProducts({ ...query }, include ?? false);
       if (products && products.length) {
-        console.timeEnd('getProductsController');
         res.send(products);
       } else {
         throw Error('No product found');
@@ -17,7 +14,6 @@ class ProductController {
     } catch (error) {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
-    console.timeEnd('get product controller');
   };
   createProduct = async (req, res) => {
     try {

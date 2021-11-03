@@ -14,7 +14,6 @@ class ProductService {
 
   async getProducts(query, include = false) {
     try {
-      console.time('get Product From DB:');
       let inc = false;
       include.includes('true') ? (inc = true) : (inc = false);
       const includeConfig = { all: inc, nested: inc };
@@ -35,14 +34,10 @@ class ProductService {
         isMenuTishray ? (configMenu.isMenuTishray = true) : null;
         isMenuWeekend ? (configMenu.isMenuWeekend = true) : null;
         delete query['pathName'];
-        console.time('only query from db');
-        const res = await db.Product.findAll({
+        return await db.Product.findAll({
           where: { ...query, ...configMenu },
           include: inc ? includeConfig : undefined
         });
-        console.timeEnd('only query from db');
-        console.timeEnd('get Product From DB:');
-        return res;
       } else if (query.id) {
         return await db.Product.findAll({
           where: { ...query },

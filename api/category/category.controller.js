@@ -4,12 +4,10 @@ class CategoryController {
   }
   getCategory = async (req, res) => {
     try {
-      console.time('get Categories');
       console.log('[GET_CATEGORY_CONTROLLER] req.query:', req.query);
       const { include, ...query } = req.query;
       const categories = await this.categoryService.getCategories({ ...query }, include ?? false);
       if (categories && categories.length) {
-        console.timeEnd('get Categories');
         res.send(categories);
       } else {
         throw Error('[GET_CATEGORY_CONTROLLER] No categories found');

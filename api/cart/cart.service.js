@@ -14,17 +14,16 @@ class CartService {
         time: new Date()
       };
 
-      cart.map((totalProductFromFront) => {
+      cart.forEach((totalProductFromFront) => {
         const { sizeToOrder, product } = totalProductFromFront;
         if (product.Price.priceType === 'weight') {
-          if (product.Price.SizePrices[0].size === 100) {
+          if (product.Price.SizePrices[0].size) {
             const pricePerSize = (sizeToOrder / product.Price.SizePrices[0].size) * product.Price.SizePrices[0].amount;
             totalCart.totalPrice += pricePerSize;
             const newProduct = { ...product, sizeToOrder, pricePerSize };
             newProduct.sizeToOrder = sizeToOrder;
             newProduct.pricePerSize = pricePerSize;
             totalCart.products.push(newProduct);
-
             return;
           } else {
             throw Error('product size must be = 100');
@@ -45,15 +44,17 @@ class CartService {
           }
         }
         if (product.Price.priceType === 'unit') {
-          const pricePerSize = product.Price.SizePrices[0].amount * (sizeToOrder / product.Price.SizePrices[0].size);
-          totalCart.totalPrice += pricePerSize;
-          const newProduct = { ...product, sizeToOrder, pricePerSize };
-          newProduct.sizeToOrder = sizeToOrder;
-          newProduct.pricePerSize = pricePerSize;
-          totalCart.products.push(newProduct);
-          return;
-        } else {
-          throw Error('product need unit');
+          if (product.Price.SizePrices.size > 0) {
+            const pricePerSize = product.Price.SizePrices[0].amount * (sizeToOrder / product.Price.SizePrices[0].size);
+            totalCart.totalPrice += pricePerSize;
+            const newProduct = { ...product, sizeToOrder, pricePerSize };
+            newProduct.sizeToOrder = sizeToOrder;
+            newProduct.pricePerSize = pricePerSize;
+            totalCart.products.push(newProduct);
+            return;
+          } else {
+            throw Error('product size need big from 0');
+          }
         }
       });
       totalCart.Tax = totalCart.totalPrice * 0.17;
