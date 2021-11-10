@@ -44,7 +44,7 @@ class CartService {
           }
         }
         if (product.Price.priceType === 'unit') {
-          if (product.Price.SizePrices.size > 0) {
+          if (product.Price.SizePrices[0].size > 0) {
             const pricePerSize = product.Price.SizePrices[0].amount * (sizeToOrder / product.Price.SizePrices[0].size);
             totalCart.totalPrice += pricePerSize;
             const newProduct = { ...product, sizeToOrder, pricePerSize };
