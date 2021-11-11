@@ -33,8 +33,12 @@ class ProductService {
         isMenuPesach ? (configMenu.isMenuPesach = true) : null;
         isMenuTishray ? (configMenu.isMenuTishray = true) : null;
         isMenuWeekend ? (configMenu.isMenuWeekend = true) : null;
+        const offset = query.page * 6;
         delete query['pathName'];
+        delete query['page'];
         return await db.Product.findAll({
+          limit: 6,
+          offset: offset,
           where: { ...query, ...configMenu },
           include: inc ? includeConfig : undefined
         });
