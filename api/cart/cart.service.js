@@ -18,7 +18,10 @@ class CartService {
         const { sizeToOrder, product } = totalProductFromFront;
         if (product.Price.priceType === 'weight') {
           if (product.Price.SizePrices[0].size) {
-            const pricePerSize = (sizeToOrder / product.Price.SizePrices[0].size) * product.Price.SizePrices[0].amount;
+            console.log("🚀 ~ file: cart.service.js ~ line 22 ~ CartService ~ cart.forEach ~ sizeToOrder", sizeToOrder)
+            console.log("🚀 ~ file: cart.service.js ~ line 23 ~ CartService ~ cart.forEach ~ product.Price.SizePrices[0].size", product.Price.SizePrices[0].size)
+            console.log("🚀 ~ file: cart.service.js ~ line 24 ~ CartService ~ cart.forEach ~ product.Price.SizePrices[0].amount", product.Price.SizePrices[0].amount)
+            const pricePerSize = (sizeToOrder / 100) * product.Price.SizePrices[0].amount;
             totalCart.totalPrice += pricePerSize;
             const newProduct = { ...product, sizeToOrder, pricePerSize };
             newProduct.sizeToOrder = sizeToOrder;
