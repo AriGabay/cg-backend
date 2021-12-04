@@ -1,5 +1,6 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
+const fs = require('fs')
 
 var transporter = nodemailer.createTransport({
   // service: 'Gmail',
@@ -27,7 +28,7 @@ var transporter = nodemailer.createTransport({
 //   }
 // });
 
-async function sendMail(subject, html, to) {
+async function sendMail(subject, html, to, orderId) {
   subject = 'הזמנה קייטרינג גבאי';
   const mailOptions = {
     from: process.env.MAIL_USERNAME,
@@ -36,6 +37,11 @@ async function sendMail(subject, html, to) {
     subject,
     text: 'הזמנה קייטרינג גבאי',
     html: html,
+    attachments: [{
+      filename: `order-${orderId}.pdf`,
+      path: `${process.cwd()}/pdfs/order-${orderId}.pdf`,
+      contentType: 'application/pdf'
+    }],
     auth: {
       user: process.env.MAIL_USERNAME,
       refreshToken: process.env.OAUTH_REFRESH_TOKEN,
@@ -47,6 +53,8 @@ async function sendMail(subject, html, to) {
       console.log('Error' + err);
     } else {
       console.log('Email Sent');
+      fs.promises.readdir(`${process.cwd()}/pdfs`)
+        .then((f) => Promise.all(f.map(e => fs.promises.unlink(`${process.cwd()}/pdfs/${e}`))))
     }
   });
 }
