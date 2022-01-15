@@ -483,19 +483,19 @@ class CartService {
 </div>
 </body>
 </html>`
-const browser = await puppeteer.connect({
-  browserWSEndpoint: 'wss://chrome.browserless.io/'
-});
-// const browser = await puppeteer.launch();
-const page = await browser.newPage();
-await page.setContent(html);
-await page.pdf({ path: `./pdfs/order-${orderAfterSave.id}.pdf`, format: "A4" ,margin: {
-  top: '20px',
-  bottom: '20px',
-  right: '20px',
-  left: '20px' }})
-await page.close();
-await browser.close();
+// const browser = await puppeteer.connect({
+//   browserWSEndpoint: 'wss://chrome.browserless.io/'
+// });
+const browser = await puppeteer.launch();
+// const page = await browser.newPage();
+// await page.setContent(html);
+// await page.pdf({ path: `./pdfs/order-${orderAfterSave.id}.pdf`, format: "A4" ,margin: {
+//   top: '20px',
+//   bottom: '20px',
+//   right: '20px',
+//   left: '20px' }})
+// await page.close();
+// await browser.close();
       emailService.sendMail('הזמנה חדשה קייטרינג גבאי', html, userDetails.email,orderAfterSave.id);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
       html;
