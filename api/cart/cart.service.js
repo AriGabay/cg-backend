@@ -130,8 +130,8 @@
 const db = require('../../models/index');
 const emailService = require('../../services/email.service');
 // const smsService = require('../../services/smsWhatsapp.service');
-const fs = require('fs');
-const pdf = require('html-pdf');
+// const fs = require('fs');
+// const pdf = require('html-pdf');
 // const puppeteer = require("puppeteer");
 class CartService {
   async createOrder(cart) {
@@ -497,11 +497,11 @@ class CartService {
 //   left: '20px' }})
 // await page.close();
 // await browser.close();
-const options = { format: 'Letter' };
-pdf.create(html, options).toFile(`./pdfs/order-${orderAfterSave.id}.pdf`, function(err, res) {
-  if (err) return console.log(err);
-  console.log(res); // { filename: '/app/businesscard.pdf' }
-});
+// const options = { format: 'Letter' };
+// pdf.create(html, options).toFile(`./pdfs/order-${orderAfterSave.id}.pdf`, function(err, res) {
+  // if (err) return console.log(err);
+  // console.log(res); // { filename: '/app/businesscard.pdf' }
+// });
       emailService.sendMail('הזמנה חדשה קייטרינג גבאי', html, userDetails.email,orderAfterSave.id);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
       html;
