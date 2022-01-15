@@ -496,8 +496,8 @@ await browser.close();
       emailService.sendMail('הזמנה חדשה קייטרינג גבאי', html, userDetails.email,orderAfterSave.id);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
       html;
-    } catch (e) {
-      console.log('[BUILD_HTML] error:', e);
+    } catch (error) {
+      console.log('[BUILD_HTML] error:', error);
     }
   }
   checkPriceType(product) {
