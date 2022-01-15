@@ -486,7 +486,7 @@ class CartService {
 // const browser = await puppeteer.connect({
 //   browserWSEndpoint: 'wss://chrome.browserless.io/'
 // });
-const browser = await puppeteer.launch();
+// const browser = await puppeteer.launch();
 // const page = await browser.newPage();
 // await page.setContent(html);
 // await page.pdf({ path: `./pdfs/order-${orderAfterSave.id}.pdf`, format: "A4" ,margin: {
