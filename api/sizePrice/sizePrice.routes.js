@@ -6,7 +6,6 @@ class SizePriceRoute {
     this.app = app;
     this.get();
     this.post();
-    // this.getById();
     this.update();
     this.remove();
   }

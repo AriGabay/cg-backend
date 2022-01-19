@@ -6,10 +6,10 @@ const client = require('twilio')(accountSid, authToken);
 
 const sendSMS = (body) => {
   client.messages
-    .create({
-      body,
-      from: 'whatsapp:+14155238886',
-      to: process.env.MY_PHONE_NUMBER,
+  .create({
+    body,
+    from: 'whatsapp:+14155238886',
+    to: process.env.MY_PHONE_NUMBER,
     })
     .then((message) => console.log(message.sid))
     .done();

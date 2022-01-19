@@ -1,6 +1,6 @@
 {
     "name": "server",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "production ready server",
     "main": "server.js",
     "scripts": {
@@ -8,12 +8,12 @@
         "server:dev": "nodemon server.js --watch",
         "server:prod": "node server.js",
         "make-migrations": "makemigrations --name ",
-        "run-migrations": "runmigration"
+        "run-migrations": "runmigration",
+        "lint": "eslint .  --ext .js"
     },
     "author": "Me",
     "license": "ISC",
     "dependencies": {
-        "@azure/msal-node": "^1.3.0",
         "bcrypt": "^5.0.0",
         "bcryptjs": "^2.4.3",
         "cors": "^2.8.5",
@@ -25,13 +25,11 @@
         "jsonwebtoken": "^8.5.1",
         "mariadb": "^2.5.2",
         "nodemailer": "^6.6.1",
-        "pdfkit": "^0.12.1",
         "puppeteer": "^12.0.1",
-        "sequelize": "^6.6.2",
-        "socket.io": "^2.2.0",
-        "twilio": "^3.65.0"
+        "sequelize": "^6.6.2"
     },
     "devDependencies": {
+        "eslint": "^8.7.0",
         "nodemon": "1.18.10",
         "sequelize-cli": "^6.2.0"
     }

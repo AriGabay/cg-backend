@@ -24,15 +24,6 @@ module.exports = (sequelize, DataTypes) => {
       displayName: DataTypes.STRING,
       categoryId: DataTypes.INTEGER,
       inStock: DataTypes.BOOLEAN,
-      // typeMenu: {
-      //   type: DataTypes.TEXT,
-      //   get: () => {
-      //     return JSON.parse(this.getDataValue('value'));
-      //   },
-      //   set: (value) => {
-      //     this.setDataValue('value', JSON.stringify(value));
-      //   }
-      // },
       imgUrl: DataTypes.STRING,
       description: DataTypes.TEXT('tiny'),
       priceId: DataTypes.INTEGER,

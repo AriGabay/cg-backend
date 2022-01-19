@@ -1,6 +1,5 @@
 const db = require('../../models/index');
 const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 class authService {

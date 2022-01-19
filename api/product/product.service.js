@@ -1,8 +1,4 @@
-const category = require('../../models/category');
 const db = require('../../models/index');
-const SizePrices = require('../../models/size_price');
-const Price = require('../../models/price');
-
 class ProductService {
   async createProduct({ newProduct }) {
     try {
@@ -75,10 +71,7 @@ class ProductService {
       }
     });
   }
-  async getAllProducts(xx, include = false) {
-    // let inc = false;
-    // include.includes('true') ? (inc = true) : (inc = false);
-    // const includeConfig = { all: inc, nested: inc };
+  async getAllProducts() {
     return await db.Product.findAll();
   }
 }

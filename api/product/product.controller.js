@@ -24,7 +24,7 @@ class ProductController {
         throw Error('Can not create Product');
       }
     } catch (error) {
-      result.status(404).send({ error: true, message: error?.message ?? error });
+      res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
   removeProduct = async (req, res) => {
@@ -37,7 +37,7 @@ class ProductController {
         throw Error('Can not remove product');
       }
     } catch (error) {
-      result.status(404).send({ error: true, message: error?.message ?? error });
+      res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
   updateProduct = async ({ body, params }, res) => {
@@ -51,7 +51,7 @@ class ProductController {
         throw Error('Can not update product');
       }
     } catch (error) {
-      result.status(404).send({ error: true, message: error?.message ?? error });
+      res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
   getAllProducts = async (req, res) => {

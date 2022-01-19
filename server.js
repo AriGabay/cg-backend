@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const db = require('./models/index');
 const expressSession = require('express-session');
 const CategoryService = require('./api/category/category.service');
@@ -26,33 +25,12 @@ const AuthService = require('./api/auth/auth.service');
 const AuthController = require('./api/auth/auth.controller');
 const AuthRoute = require('./api/auth/auth.routes');
 
-const { connectSockets } = require('./services/socket.service');
 const dotenv = require('dotenv');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// const msal = require('@azure/msal-node');
-
 dotenv.config();
 
-// Before running the sample, you will need to replace the values in the config,
-// including the clientSecret
-// const config = {
-//   auth: {
-//     clientId: process.env.CLIENT_ID,
-//     authority: process.env.AUTHORITY,
-//     clientSecret: process.env.CLIENT_SECRET
-//   },
-//   system: {
-//     loggerOptions: {
-//       loggerCallback(loglevel, message, containsPii) {
-//         console.log(message);
-//       },
-//       piiLoggingEnabled: false,
-//       logLevel: msal.LogLevel.Verbose
-//     }
-//   }
-// };
 // routes
 const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware');
 
@@ -82,15 +60,6 @@ const session = expressSession({
 app.use(session);
 app.use(express.json());
 app.all('*', setupAsyncLocalStorage);
-connectSockets(http, session);
-
-// Make every server-side-route to match the index.html
-// so when requesting http://localhost:3030/index.html/car/123 it will still respond with
-// our SPA (single page app) (the index.html file) and allow vue/react-router to take it from there
-// app.get('/**', (req, res) => {
-//   console.log('__dirname:', __dirname__);
-//   res.sendFile(path.join(__dirname__, 'public', 'index.html'));
-// })
 
 const port = process.env.PORT || 3030;
 
@@ -125,6 +94,5 @@ db.sequelize.sync().then(() => {
 
   http.listen(port, () => {
     logger.info('Server is running on port: ' + port);
-    // emailer.sendMail('testSub', { titleProduct: 'SERVER UP ! ', price: new Date() });
   });
 });

@@ -1,10 +1,8 @@
-const { log } = require('../../middlewares/logger.middleware');
 const myUrl = '/api/cart';
 class CartRoute {
   constructor(app, CartController) {
     this.CartController = CartController;
     this.app = app;
-    // this.get();
     this.post();
     this.postOrder();
   }
