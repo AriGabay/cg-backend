@@ -74,7 +74,7 @@ class CartService {
       const orderStr = JSON.stringify(newObj);
       const orderAfterSave = await db.Order.create({ order: orderStr });
       const {htmlForEmail,htmlForPdf} = buildHtml(orderAfterSave,userDetails,cart)
-      pdf.create(htmlForPdf, {format:'A4'}).toFile(`${process.cwd()}/pdfs/order-${orderAfterSave.id}.pdf`, (err) => {
+      pdf.create(htmlForPdf, {format:'A4'}).toFile(`${__dirname}/pdfs/order-${orderAfterSave.id}.pdf`, (err) => {
         if (err) {
           console.log(err);
         }

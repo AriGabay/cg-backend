@@ -26,7 +26,7 @@ async function sendMail(subject, html, to, orderId) {
     html: html,
     attachments: [{
       filename: `order-${orderId}.pdf`,
-      path: `${process.cwd()}/pdfs/order-${orderId}.pdf`,
+      path: `${__dirname}/pdfs/order-${orderId}.pdf`,
       contentType: 'application/pdf'
     }],
     auth: {
