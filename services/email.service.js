@@ -24,11 +24,11 @@ async function sendMail(subject, html, to, orderId) {
     subject,
     text: 'הזמנה קייטרינג גבאי',
     html: html,
-    attachments: [{
-      filename: `order-${orderId}.pdf`,
-      path: `${__dirname}/pdfs/order-${orderId}.pdf`,
-      contentType: 'application/pdf'
-    }],
+    // attachments: [{
+    //   filename: `order-${orderId}.pdf`,
+    //   path: `${__dirname}/pdfs/order-${orderId}.pdf`,
+    //   contentType: 'application/pdf'
+    // }],
     auth: {
       user: process.env.MAIL_USERNAME,
       refreshToken: process.env.OAUTH_REFRESH_TOKEN,
