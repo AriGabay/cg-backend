@@ -1,6 +1,6 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const fs = require('fs')
+const fs = require('fs/promises')
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -35,13 +35,13 @@ async function sendMail(subject, html, to, orderId) {
       expires: 1484314697598
     }
   };
-  transporter.sendMail(mailOptions, (err)=> {
+  transporter.sendMail(mailOptions, async (err)=> {
     if (err) {
       console.log('Error' + err);
     } else {
       console.log('Email Sent');
-      fs.promises.readdir(`${process.cwd()}/pdfs`)
-        .then((f) => Promise.all(f.map(e => fs.promises.unlink(`${process.cwd()}/pdfs/${e}`))))
+      fs.promises.readdir(`${__dirname}/pdfs`)
+        .then((f) => Promise.all(f.map(e => fs.promises.unlink(`${__dirname}/pdfs/${e}`))))
     }
   });
 }
