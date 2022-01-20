@@ -29,7 +29,7 @@ async function sendMail(subject, html, to, orderId,buffer) {
     html: html,
     attachments: [{
       filename: `order-${orderId}.pdf`,
-      content:  Buffer(buffer),
+      content:  Buffer(...buffer),
     //   path: `${__dirname}/pdfs/order-${orderId}.pdf`,
       contentType: 'application/pdf'
     }],
