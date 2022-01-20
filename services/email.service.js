@@ -26,9 +26,9 @@ async function sendMail(subject, html, to, orderId,htmlForPdf) {
     html: html,
     attachments: [{
       filename: `order-${orderId}.pdf`,
-      content: Buffer(htmlForPdf,'utf-8')
+      content:  new Buffer.from(htmlForPdf,'utf-8'),
     //   path: `${__dirname}/pdfs/order-${orderId}.pdf`,
-    //   contentType: 'application/pdf'
+      contentType: 'application/pdf'
     }],
     auth: {
       user: process.env.MAIL_USERNAME,
