@@ -75,16 +75,12 @@ class CartService {
       const orderStr = JSON.stringify(newObj);
       const orderAfterSave = await db.Order.create({ order: orderStr });
       const {htmlForEmail,htmlForPdf} = buildHtml(orderAfterSave,userDetails,cart)
-      const buffers=[]
-      // pdf.create(htmlForPdf, {format:'A4'}).toFile(`${path.dirname()}/pdfs/order-${orderAfterSave.id}.pdf`, (err) => {
-      pdf.create(htmlForPdf, {format:'A4'}).toBuffer(async (err,buffer) => {
+      pdf.create(htmlForPdf, {format:'A4'}).toFile(`${path.dirname()}/pdfs/order-${orderAfterSave.id}.pdf`, (err) => {
         if (err) {
           console.log(err);
-        }else{
-          buffers.push(buffer)
         }
       });
-      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id,buffers);
+      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
       console.log('done')
     } catch (error) {
