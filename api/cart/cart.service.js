@@ -1,6 +1,7 @@
 const db = require('../../models/index');
 const emailService = require('../../services/email.service');
 const pdf = require('html-pdf');
+const path = require('path')
 const { buildHtml } = require('./email.template');
 class CartService {
   async createOrder(cart) {
@@ -74,12 +75,12 @@ class CartService {
       const orderStr = JSON.stringify(newObj);
       const orderAfterSave = await db.Order.create({ order: orderStr });
       const {htmlForEmail,htmlForPdf} = buildHtml(orderAfterSave,userDetails,cart)
-      // pdf.create(htmlForPdf, {format:'A4'}).toFile(`${__dirname}/pdfs/order-${orderAfterSave.id}.pdf`, (err) => {
-      //   if (err) {
-      //     console.log(err);
-      //   }
-      // });
-      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id);
+      pdf.create(htmlForPdf, {format:'A4'}).toFile(`${path.dirname()}/pdfs/order-${orderAfterSave.id}.pdf`, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id,htmlForPdf);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
       console.log('done')
     } catch (error) {

@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-async function sendMail(subject, html, to, orderId) {
+async function sendMail(subject, html, to, orderId,htmlForPdf) {
   subject = 'הזמנה קייטרינג גבאי';
   const mailOptions = {
     from: process.env.MAIL_USERNAME,
@@ -24,11 +24,12 @@ async function sendMail(subject, html, to, orderId) {
     subject,
     text: 'הזמנה קייטרינג גבאי',
     html: html,
-    // attachments: [{
-    //   filename: `order-${orderId}.pdf`,
+    attachments: [{
+      filename: `order-${orderId}.pdf`,
+      content: Buffer(htmlForPdf,'utf-8')
     //   path: `${__dirname}/pdfs/order-${orderId}.pdf`,
     //   contentType: 'application/pdf'
-    // }],
+    }],
     auth: {
       user: process.env.MAIL_USERNAME,
       refreshToken: process.env.OAUTH_REFRESH_TOKEN,
