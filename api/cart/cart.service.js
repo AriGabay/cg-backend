@@ -2,6 +2,7 @@ const db = require('../../models/index');
 const emailService = require('../../services/email.service');
 const nodeHtmlToImage = require('node-html-to-image')
 const { buildHtml } = require('./email.template');
+
 class CartService {
   async createOrder(cart) {
     try {
@@ -74,10 +75,11 @@ class CartService {
       const orderStr = JSON.stringify(newObj);
       const orderAfterSave = await db.Order.create({ order: orderStr });
       const {htmlForEmail,htmlForPdf} = buildHtml(orderAfterSave,userDetails,cart)
-      await nodeHtmlToImage({
+      const x = await nodeHtmlToImage({
         output: `./pdfs/order-${orderAfterSave.id}.png`,
         html: htmlForPdf
       })
+      console.log('x',x);
       await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id,htmlForPdf);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
     } catch (error) {
