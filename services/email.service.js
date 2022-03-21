@@ -28,7 +28,7 @@ async function sendMail(subject, html, to, orderId) {
     html: html,
     attachments: [{
       path: directory,
-      contentType: 'application/pdf'
+      contentType: 'application/png'
     }],
     auth: {
       user: process.env.MAIL_USERNAME,
