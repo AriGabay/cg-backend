@@ -80,6 +80,7 @@ class CartService {
       })
       await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id,htmlForPdf);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
+      
       console.log('done')
     } catch (error) {
       console.log('[BUILD_HTML] error:', error);
