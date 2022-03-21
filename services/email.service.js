@@ -1,6 +1,9 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const fs = require('fs/promises')
+const fsExtra = require('fs-extra')
+const path = require('path')
+
+
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -15,8 +18,9 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-async function sendMail(subject, html, to, orderId,htmlForPdf) {
+async function sendMail(subject, html, to, orderId) {
   subject = 'הזמנה קייטרינג גבאי';
+  let directory = path.join(__dirname, `../pdfs/order-${orderId}.pdf`)
   const mailOptions = {
     from: process.env.MAIL_USERNAME,
     to,
@@ -25,10 +29,8 @@ async function sendMail(subject, html, to, orderId,htmlForPdf) {
     text: 'הזמנה קייטרינג גבאי',
     html: html,
     attachments: [{
-      filename: `order-${orderId}.pdf`,
-      content: Buffer(htmlForPdf,'utf-8')
-    //   path: `${__dirname}/pdfs/order-${orderId}.pdf`,
-    //   contentType: 'application/pdf'
+      path: directory,
+      contentType: 'application/pdf'
     }],
     auth: {
       user: process.env.MAIL_USERNAME,
@@ -41,8 +43,8 @@ async function sendMail(subject, html, to, orderId,htmlForPdf) {
       console.log('Error' + err);
     } else {
       console.log('Email Sent');
-      fs.promises.readdir(`${__dirname}/pdfs`)
-        .then((f) => Promise.all(f.map(e => fs.promises.unlink(`${__dirname}/pdfs/${e}`))))
+      directory = path.join(__dirname, `../pdfs`)
+      fsExtra.emptyDirSync(directory)
     }
   });
 }
