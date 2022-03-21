@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-async function sendMail(subject, html, to, orderId,htmlForPdf) {
+async function sendMail(subject, html, to, orderId) {
   subject = 'הזמנה קייטרינג גבאי';
   let directory = path.join(__dirname, `../pdfs/order-${orderId}.png`)
   const pdfBuffer = pdf.create(html).toStream(function(err, stream) {

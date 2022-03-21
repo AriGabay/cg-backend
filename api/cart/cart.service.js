@@ -1,6 +1,5 @@
 const db = require('../../models/index');
 const emailService = require('../../services/email.service');
-const nodeHtmlToImage = require('node-html-to-image')
 const { buildHtml } = require('./email.template');
 
 class CartService {
@@ -81,7 +80,7 @@ class CartService {
       //   puppeteerArgs: { args: ["--no-sandbox"] },
       // })
       // console.log('x',x);
-      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id,htmlForPdf);
+      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
     } catch (error) {
       console.log('[BUILD_HTML] error:', error);
