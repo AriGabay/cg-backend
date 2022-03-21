@@ -1,7 +1,5 @@
 const db = require('../../models/index');
 const emailService = require('../../services/email.service');
-const pdf = require('html-pdf');
-const path = require('path')
 const { buildHtml } = require('./email.template');
 class CartService {
   async createOrder(cart) {
