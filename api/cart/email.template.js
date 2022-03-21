@@ -481,6 +481,7 @@ let htmlForPdf =`
 </head>
 
 <body>
+<div id="content">
 <div class="title" style="padding-right: 30px;">
   <h1>הזמנה</h1>
 </div>
@@ -554,6 +555,7 @@ htmlForPdf += `<tr class="total">
 </p>
 </div>
 
+</div>
 </div>
 </div>
 </div>

@@ -3,8 +3,6 @@ const nodemailer = require('nodemailer');
 const fsExtra = require('fs-extra')
 const path = require('path')
 
-
-
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
@@ -20,7 +18,7 @@ const transporter = nodemailer.createTransport({
 
 async function sendMail(subject, html, to, orderId) {
   subject = 'הזמנה קייטרינג גבאי';
-  let directory = path.join(__dirname, `../pdfs/order-${orderId}.pdf`)
+  let directory = path.join(__dirname, `../pdfs/order-${orderId}.png`)
   const mailOptions = {
     from: process.env.MAIL_USERNAME,
     to,

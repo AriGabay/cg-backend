@@ -1,6 +1,6 @@
 const db = require('../../models/index');
 const emailService = require('../../services/email.service');
-const puppeteer = require('puppeteer')
+const nodeHtmlToImage = require('node-html-to-image')
 const { buildHtml } = require('./email.template');
 class CartService {
   async createOrder(cart) {
@@ -74,21 +74,10 @@ class CartService {
       const orderStr = JSON.stringify(newObj);
       const orderAfterSave = await db.Order.create({ order: orderStr });
       const {htmlForEmail,htmlForPdf} = buildHtml(orderAfterSave,userDetails,cart)
-      // const browser = await puppeteer.launch({ headless: true });
-      const browser = await puppeteer.connect({browserWSEndpoint:'wss://chrome.browserless.io/'});
-      const page = await browser.newPage();
-      await page.setContent(htmlForPdf, {waitUntil: 'domcontentloaded'});
-      await page.pdf({
-        printBackground: true,
-        path: `./pdfs/order-${orderAfterSave.id}.pdf`,
-        format: "Letter",
-        margin: {
-            top: "20px",
-            bottom: "40px",
-            left: "20px",
-            right: "20px"
-        }})
-      await browser.close()
+      await nodeHtmlToImage({
+        output: `./pdfs/order-${orderAfterSave.id}.png`,
+        html: htmlForPdf
+      })
       await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id,htmlForPdf);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
       console.log('done')
