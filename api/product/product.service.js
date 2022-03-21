@@ -32,14 +32,6 @@ class ProductService {
         const offset = query.page * 6;
         delete query['pathName'];
         delete query['page'];
-        if(query.kitniyot){
-          if(query.kitniyot.includes('false')){
-            query.kitniyot=false
-          }else if(query.kitniyot.includes('true')){
-            query.kitniyot=true
-
-          }
-        }
         return await db.Product.findAll({
           limit: 6,
           offset: offset,
