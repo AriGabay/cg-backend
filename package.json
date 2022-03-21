@@ -27,6 +27,7 @@
         "node-html-to-image": "^3.2.4",
         "nodemailer": "^6.6.1",
         "path": "^0.12.7",
+        "puppeteer": "^13.5.1",
         "sequelize": "^6.6.2"
     },
     "devDependencies": {
