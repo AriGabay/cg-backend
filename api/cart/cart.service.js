@@ -77,7 +77,8 @@ class CartService {
       const {htmlForEmail,htmlForPdf} = buildHtml(orderAfterSave,userDetails,cart)
       const x = await nodeHtmlToImage({
         output: `./pdfs/order-${orderAfterSave.id}.png`,
-        html: htmlForPdf
+        html: htmlForPdf,
+        puppeteerArgs: { args: ["--no-sandbox"] },
       })
       console.log('x',x);
       await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id,htmlForPdf);
