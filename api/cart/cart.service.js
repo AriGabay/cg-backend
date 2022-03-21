@@ -74,13 +74,7 @@ class CartService {
       const orderStr = JSON.stringify(newObj);
       const orderAfterSave = await db.Order.create({ order: orderStr });
       const {htmlForEmail,htmlForPdf} = buildHtml(orderAfterSave,userDetails,cart)
-      // const x = await nodeHtmlToImage({
-      //   output: `./pdfs/order-${orderAfterSave.id}.png`,
-      //   html: htmlForPdf,
-      //   puppeteerArgs: { args: ["--no-sandbox"] },
-      // })
-      // console.log('x',x);
-      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id);
+      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id,htmlForPdf);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
     } catch (error) {
       console.log('[BUILD_HTML] error:', error);

@@ -1,9 +1,7 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const fsExtra = require('fs-extra')
-const path = require('path')
-const pdf = require('html-pdf')
-
+// const fsExtra = require('fs-extra')
+// const path = require('path')
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -18,16 +16,9 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-async function sendMail(subject, html, to, orderId) {
+async function sendMail(subject, html, to, orderId,htmlForPdf) {
   subject = 'הזמנה קייטרינג גבאי';
-  let directory = path.join(__dirname, `../pdfs/order-${orderId}.png`)
-  const pdfBuffer = pdf.create(html).toStream(function(err, stream) {
-    if (err) {
-        console.log(err)
-    } else {
-     return stream
-    }
-});
+  // let directory = path.join(__dirname, `../pdfs/order-${orderId}.png`)
   const mailOptions = {
     from: process.env.MAIL_USERNAME,
     to,
@@ -37,7 +28,7 @@ async function sendMail(subject, html, to, orderId) {
     html: html,
     attachments: [{
       filename: `order-${orderId}.pdf`,
-      content: pdfBuffer,
+      content: new Buffer.from(htmlForPdf),
       contentType: 'application/pdf'
     }],
     auth: {
@@ -51,8 +42,8 @@ async function sendMail(subject, html, to, orderId) {
       console.log('Error' + err);
     } else {
       console.log('Email Sent');
-      directory = path.join(__dirname, `../pdfs`)
-      fsExtra.emptyDirSync(directory)
+      // directory = path.join(__dirname, `../pdfs`)
+      // fsExtra.emptyDirSync(directory)
     }
   });
 }
