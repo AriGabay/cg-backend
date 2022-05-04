@@ -389,8 +389,8 @@ let htmlForPdf =`
 
   .invoice-box table tr.total td {
       border-top: 1px solid #717885;
-      font-size: medium;
-      font-weight: 300;
+      font-size: small;
+      font-weight: 250;
   }
 
 
@@ -400,8 +400,10 @@ let htmlForPdf =`
 
   .company-info {
       margin-top: 10rem;
+      justify-content: center;
+      align-items: center;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: row;
       width: 100%;
   }
 
@@ -530,14 +532,12 @@ htmlForPdf += `<tr class="total">
 <td>${cart.totalPrice}₪</td>
 </tr>
 <tr>
-<td style="font-size: medium;">
+<td style="font-size: small;">
     שעת איסוף : ${userDetails.pickup}<br>
     תאריך איסוף : ${userDetails.pickUpDate}<br>
 </td>
 </tr>
-
 </tbody>
-
 </table>
 <div class="company-info">
 <div class="company-info-item">
@@ -545,11 +545,6 @@ htmlForPdf += `<tr class="total">
 <strong>קייטרינג גבאי בע״מ</strong><br>
 גני איילון <br>
 המברג 10 טבריה <br>
-</p>
-</div>
-<div class="company-info-item">
-<p>
-<br>
 <a href="https://www.c-g1.com">www.c-g1.com</a><br>
 <a href="mailto:gabay.catering@gmail.com">gabay.catering@gmail.com</a>
 </p>

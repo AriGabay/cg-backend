@@ -1,7 +1,6 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-// const fsExtra = require('fs-extra')
-// const path = require('path')
+const pdf =require('html-pdf');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -16,9 +15,29 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+
+const bufferPdf = (html, options) => {
+	return new Promise((resolve, reject) => {
+		pdf.create(html, options).toBuffer(function (err, buffer) {
+			if (err) {
+				return reject(err);
+			}
+			resolve(buffer);
+		});
+	});
+};
+
 async function sendMail(subject, html, to, orderId,htmlForPdf) {
   subject = 'הזמנה קייטרינג גבאי';
-  // let directory = path.join(__dirname, `../pdfs/order-${orderId}.png`)
+  const options = {
+    format: 'A4',
+    border: {
+      top: '1cm',
+      right: '2cm',
+      bottom: '1cm',
+      left: '2cm',
+    },
+  };
   const mailOptions = {
     from: process.env.MAIL_USERNAME,
     to,
@@ -28,7 +47,7 @@ async function sendMail(subject, html, to, orderId,htmlForPdf) {
     html: html,
     attachments: [{
       filename: `order-${orderId}.pdf`,
-      content: new Buffer.from(htmlForPdf),
+      content:  await bufferPdf(htmlForPdf, options),
       contentType: 'application/pdf'
     }],
     auth: {
@@ -42,8 +61,7 @@ async function sendMail(subject, html, to, orderId,htmlForPdf) {
       console.log('Error' + err);
     } else {
       console.log('Email Sent');
-      // directory = path.join(__dirname, `../pdfs`)
-      // fsExtra.emptyDirSync(directory)
+
     }
   });
 }
