@@ -1,6 +1,6 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const pdf =require('html-pdf');
+const pdf = require('html-pdf');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -16,18 +16,22 @@ const transporter = nodemailer.createTransport({
 });
 
 
-const bufferPdf = (html, options) => {
-	return new Promise((resolve, reject) => {
-		pdf.create(html, options).toBuffer(function (err, buffer) {
-			if (err) {
-				return reject(err);
-			}
-			resolve(buffer);
-		});
-	});
+const bufferPdf = async (html, options) => {
+  try {
+    return new Promise((resolve, reject) => {
+      pdf.create(html, options).toBuffer(function (err, buffer) {
+        if (err) {
+          return reject(err);
+        }
+        resolve(buffer);
+      });
+    });
+  } catch (e) {
+    console.log('ERROR [bufferPdf]:', e);
+  }
 };
 
-async function sendMail(subject, html, to, orderId,htmlForPdf) {
+async function sendMail(subject, html, to, orderId, htmlForPdf) {
   subject = 'הזמנה קייטרינג גבאי';
   const options = {
     format: 'A4',
@@ -47,7 +51,7 @@ async function sendMail(subject, html, to, orderId,htmlForPdf) {
     html: html,
     attachments: [{
       filename: `order-${orderId}.pdf`,
-      content:  await bufferPdf(htmlForPdf, options),
+      content: await bufferPdf(htmlForPdf, options),
       contentType: 'application/pdf'
     }],
     auth: {
@@ -56,7 +60,7 @@ async function sendMail(subject, html, to, orderId,htmlForPdf) {
       expires: 1484314697598
     }
   };
-  transporter.sendMail(mailOptions, async (err)=> {
+  transporter.sendMail(mailOptions, async (err) => {
     if (err) {
       console.log('Error' + err);
     } else {
