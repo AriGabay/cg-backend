@@ -73,8 +73,9 @@ class CartService {
       const newObj = { ...userDetails, ...cart };
       const orderStr = JSON.stringify(newObj);
       const orderAfterSave = await db.Order.create({ order: orderStr });
-      const {htmlForEmail,htmlForPdf} = buildHtml(orderAfterSave,userDetails,cart)
-      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email,orderAfterSave.id,htmlForPdf);
+      const { htmlForEmail } = buildHtml(orderAfterSave, userDetails, cart)
+      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email);
+      // await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email, orderAfterSave.id);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
     } catch (error) {
       console.log('[BUILD_HTML] error:', error);

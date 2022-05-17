@@ -1,6 +1,5 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const pdf = require('html-pdf');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -15,33 +14,8 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-
-const bufferPdf = async (html, options) => {
-  try {
-    return new Promise((resolve, reject) => {
-      pdf.create(html, options).toBuffer(function (err, buffer) {
-        if (err) {
-          return reject(err);
-        }
-        resolve(buffer);
-      });
-    });
-  } catch (e) {
-    console.log('ERROR [bufferPdf]:', e);
-  }
-};
-
-async function sendMail(subject, html, to, orderId, htmlForPdf) {
+async function sendMail(subject, html, to) {
   subject = 'הזמנה קייטרינג גבאי';
-  const options = {
-    format: 'A4',
-    border: {
-      top: '1cm',
-      right: '2cm',
-      bottom: '1cm',
-      left: '2cm',
-    },
-  };
   const mailOptions = {
     from: process.env.MAIL_USERNAME,
     to,
@@ -49,11 +23,11 @@ async function sendMail(subject, html, to, orderId, htmlForPdf) {
     subject,
     text: 'הזמנה קייטרינג גבאי',
     html: html,
-    attachments: [{
-      filename: `order-${orderId}.pdf`,
-      content: await bufferPdf(htmlForPdf, options),
-      contentType: 'application/pdf'
-    }],
+    // attachments: [{
+    //   filename: `order-${orderId}.pdf`,
+    //   content: undefined,
+    //   contentType: 'application/pdf'
+    // }],
     auth: {
       user: process.env.MAIL_USERNAME,
       refreshToken: process.env.OAUTH_REFRESH_TOKEN,
