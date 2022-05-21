@@ -77,8 +77,6 @@ class CartService {
       const { htmlForEmail } = buildHtml(orderAfterSave, userDetails, cart)
       const bufferPdf = mainBuild(orderAfterSave, userDetails, cart)
       await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email, bufferPdf, orderAfterSave.id);
-      // await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email, orderAfterSave.id);
-      // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
     } catch (error) {
       console.log('[BUILD_HTML] error:', error);
     }

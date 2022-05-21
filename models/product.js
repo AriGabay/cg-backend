@@ -39,5 +39,3 @@ module.exports = (sequelize, DataTypes) => {
   );
   return Product;
 };
-
-// price:DataTypes.ENUM(typePrice._id)
