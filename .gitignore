@@ -123,3 +123,5 @@ dist
 # by me: 
 BaltimoreCyberTrustRoot.crt.pem
 ./pdfs
+.idea
+.vscode

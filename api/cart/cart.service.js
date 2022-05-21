@@ -1,5 +1,6 @@
 const db = require('../../models/index');
 const emailService = require('../../services/email.service');
+const { mainBuild } = require('./buildPdf.service');
 const { buildHtml } = require('./email.template');
 
 class CartService {
@@ -74,7 +75,8 @@ class CartService {
       const orderStr = JSON.stringify(newObj);
       const orderAfterSave = await db.Order.create({ order: orderStr });
       const { htmlForEmail } = buildHtml(orderAfterSave, userDetails, cart)
-      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email);
+      const bufferPdf = mainBuild(orderAfterSave, userDetails, cart)
+      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email, bufferPdf, orderAfterSave.id);
       // await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email, orderAfterSave.id);
       // smsService.sendSMS(`הזמנה חדשה נכנסה - ${orderAfterSave.id}`);
     } catch (error) {
