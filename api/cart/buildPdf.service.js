@@ -66,7 +66,10 @@ const buildRow = (orderAfterSave, cart) => {
     return rows
 }
 const fix = (str) => {
-    return str.split('').reverse().join('');
+    if (typeof str === 'string') {
+        return str.split('').reverse().join('');
+
+    }
 }
 
 const checkPriceType = (product) => {
