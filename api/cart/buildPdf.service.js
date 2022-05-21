@@ -20,6 +20,7 @@ const mainBuild = (orderAfterSave, userDetails, cart) => {
         doc.setFontSize(15)
         doc.text('פרטים :', maxRightPage + 10, topPage + 40);
         doc.setFontSize(12)
+        console.log('orderAfterSave : ', orderAfterSave);
         const rowDetails = [
             [`${fix((orderAfterSave.dataValues.id ? +orderAfterSave.dataValues.id + '' : ''))}`, 'מספר הזמנה :'],
             [`${userDetails.firstName} ${userDetails.lastName}`, 'שם מלא :'],

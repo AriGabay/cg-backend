@@ -16,8 +16,6 @@ const transporter = nodemailer.createTransport({
 
 async function sendMail(subject, html, to, pdfBuffer, orderId) {
   subject = 'הזמנה קייטרינג גבאי';
-  console.log('pdfBuffer Line 19', pdfBuffer);
-  console.log('to buffer', Buffer(pdfBuffer));
   const mailOptions = {
     from: process.env.MAIL_USERNAME,
     to,

@@ -76,7 +76,6 @@ class CartService {
       const orderAfterSave = await db.Order.create({ order: orderStr });
       const { htmlForEmail } = buildHtml(orderAfterSave, userDetails, cart)
       const bufferPdf = mainBuild(orderAfterSave, userDetails, cart)
-      console.log('bufferPdf :', bufferPdf);
       await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email, bufferPdf, orderAfterSave.id);
     } catch (error) {
       console.log('[BUILD_HTML] error:', error);
