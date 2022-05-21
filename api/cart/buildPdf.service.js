@@ -21,7 +21,7 @@ const mainBuild = (orderAfterSave, userDetails, cart) => {
         doc.text('פרטים :', maxRightPage + 10, topPage + 40);
         doc.setFontSize(12)
         const rowDetails = [
-            [`${fix(orderAfterSave.dataValues.id)}`, 'מספר הזמנה :'],
+            [`${fix((orderAfterSave.dataValues.id ? +orderAfterSave.dataValues.id + '' : ''))}`, 'מספר הזמנה :'],
             [`${userDetails.firstName} ${userDetails.lastName}`, 'שם מלא :'],
             [fix(userDetails.mobile), 'פלאפון :'],
             [fix(userDetails.mobileTow), 'פלאפון נוסף :'],
@@ -70,6 +70,7 @@ const fix = (str) => {
         return str.split('').reverse().join('');
 
     }
+    return str
 }
 
 const checkPriceType = (product) => {
