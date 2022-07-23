@@ -5,7 +5,7 @@ class OrderController {
   getOrder = async (req, res) => {
     try {
       const { include, ...query } = req.query;
-      const orders = await this.orderService.getOrders({ ...query }, !!include ?? false);
+      const orders = await this.orderService.getOrders({ ...query }, include);
       if (orders && orders.length) {
         res.send(orders);
       } else {
@@ -21,7 +21,7 @@ class OrderController {
       const orders = await this.orderService.getOrdersByDate(dates);
       res.send(orders);
     } catch (error) {
-      console.log('error:', error);
+      console.log('[Error] : Get Orders By Date :', error);
     }
   };
 }

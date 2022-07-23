@@ -1,4 +1,5 @@
 const { log } = require('../../middlewares/logger.middleware');
+const { parseQueryParm } = require('../../middlewares/parseQueryParam');
 const orderUrl = '/api/order/';
 class OrderRoute {
   constructor(app, OrderController) {
@@ -8,10 +9,10 @@ class OrderRoute {
     this.getByDates();
   }
   get() {
-    this.app.get(orderUrl, log, this.OrderController.getOrder);
+    this.app.get(orderUrl, log, parseQueryParm, this.OrderController.getOrder);
   }
   getByDates() {
-    this.app.get(orderUrl + 'getOrdersByDate', log, this.OrderController.getOrdersByDate);
+    this.app.get(orderUrl + 'getOrdersByDate', log, parseQueryParm, this.OrderController.getOrdersByDate);
   }
 }
 

@@ -1,3 +1,4 @@
+const { sequelize } = require('../../models/index');
 const db = require('../../models/index');
 class ProductService {
   async createProduct({ newProduct }) {
@@ -8,40 +9,46 @@ class ProductService {
     }
   }
 
-  async getProducts(query, include = false) {
+  async getProducts(
+    query,
+    attributes = { exclude: ['createdAt', 'updatedAt'] },
+    subAttributesCategory = { exclude: ['createdAt', 'updatedAt'] },
+    raw = false,
+    subAttributesPrice = { exclude: ['createdAt', 'updatedAt'] },
+    subAttributesSizePrice = { exclude: ['createdAt', 'updatedAt'] }
+  ) {
     try {
-      let inc = false;
-      include.includes('true') ? (inc = true) : (inc = false);
-      const includeConfig = { all: inc, nested: inc };
-      if (query.pathName) {
-        const { pathName } = query;
-        let isMenuPesach = false;
-        let isMenuWeekend = false;
-        let isMenuTishray = false;
-        if (pathName.includes('weekend')) {
-          isMenuWeekend = true;
-        } else if (pathName.includes('tishray')) {
-          isMenuTishray = true;
-        } else if (pathName.includes('pesach')) {
-          isMenuPesach = true;
+      const includeConfig = [
+        { model: sequelize.model('Category'), attributes: subAttributesCategory },
+        {
+          model: sequelize.model('Price'),
+          attributes: subAttributesPrice,
+          include: { model: sequelize.model('SizePrice'), attributes: subAttributesSizePrice }
         }
-        const configMenu = {};
-        isMenuPesach ? (configMenu.isMenuPesach = true) : null;
-        isMenuTishray ? (configMenu.isMenuTishray = true) : null;
-        isMenuWeekend ? (configMenu.isMenuWeekend = true) : null;
-        const offset = query.page * 6;
-        delete query['pathName'];
-        delete query['page'];
+      ];
+      if (query.pathName) {
+        const { pathName, page, ...queryOnly } = query;
+        if (pathName.includes('weekend')) {
+          Object.assign(queryOnly, { isMenuWeekend: true });
+        } else if (pathName.includes('tishray')) {
+          Object.assign(queryOnly, { isMenuTishray: true });
+        } else if (pathName.includes('pesach')) {
+          Object.assign(queryOnly, { isMenuPesach: true });
+        }
         return await db.Product.findAll({
           limit: 6,
-          offset: offset,
-          where: { ...query, ...configMenu },
-          include: inc ? includeConfig : undefined
+          offset: page * 6,
+          where: { ...queryOnly },
+          include: includeConfig ? includeConfig : undefined,
+          raw: raw,
+          attributes: attributes
         });
       } else if (query.id) {
-        return await db.Product.findAll({
+        return await db.Product.findOne({
           where: { ...query },
-          include: inc ? includeConfig : undefined
+          include: includeConfig ? includeConfig : undefined,
+          raw: raw,
+          attributes: attributes
         });
       }
     } catch (error) {

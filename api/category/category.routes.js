@@ -1,4 +1,5 @@
 const { log } = require('../../middlewares/logger.middleware');
+const { parseQueryParm } = require('../../middlewares/parseQueryParam');
 const myUrl = '/api/category';
 class CategoryRoute {
   constructor(app, CategoryController) {
@@ -8,9 +9,17 @@ class CategoryRoute {
     this.post();
     this.update();
     this.remove();
+    this.getMenu();
+    this.getCategoryDropDown();
   }
   get() {
-    this.app.get(`${myUrl}`, log, this.CategoryController.getCategory);
+    this.app.get(`${myUrl}`, log, parseQueryParm, this.CategoryController.getCategory);
+  }
+  getMenu() {
+    this.app.get(`${myUrl}/menu`, log, parseQueryParm, this.CategoryController.getCategoryMenu);
+  }
+  getCategoryDropDown() {
+    this.app.get(`${myUrl}/dropdown`, log, this.CategoryController.getCategoryDropDown);
   }
   post() {
     this.app.post(myUrl, this.CategoryController.createCategory);

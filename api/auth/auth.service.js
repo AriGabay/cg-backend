@@ -7,10 +7,9 @@ class authService {
     try {
       const res = await db.User.findOne({ where: { userName: user.userName } });
       if (!res) {
-        return new Error('cannot find user');
-      } else {
-        return res.dataValues.password;
+        throw new Error('cannot find user');
       }
+      return res.dataValues.password;
     } catch (error) {
       console.log('error:', error);
     }

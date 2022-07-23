@@ -35,6 +35,7 @@ dotenv.config();
 const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware');
 
 const logger = require('./services/logger.service');
+const { parseQueryParm } = require('./middlewares/parseQueryParam');
 
 const app = express();
 const http = require('http').createServer(app);
@@ -59,6 +60,7 @@ const session = expressSession({
 // Express App Config
 app.use(session);
 app.use(express.json());
+// app.use(parseQueryParm);
 app.all('*', setupAsyncLocalStorage);
 
 const port = process.env.PORT || 3030;

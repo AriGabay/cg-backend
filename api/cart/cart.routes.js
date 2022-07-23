@@ -1,3 +1,4 @@
+const { parseQueryParm } = require('../../middlewares/parseQueryParam');
 const myUrl = '/api/cart';
 class CartRoute {
   constructor(app, CartController) {
@@ -7,10 +8,10 @@ class CartRoute {
     this.postOrder();
   }
   postOrder() {
-    this.app.post(myUrl + '/sendOrder', this.CartController.sendOrder);
+    this.app.post(myUrl + '/sendOrder', parseQueryParm, this.CartController.sendOrder);
   }
   post() {
-    this.app.post(myUrl, this.CartController.createOrder);
+    this.app.post(myUrl, parseQueryParm, this.CartController.createOrder);
   }
 }
 

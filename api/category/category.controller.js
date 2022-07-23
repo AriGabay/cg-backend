@@ -2,9 +2,9 @@ class CategoryController {
   constructor(CategoryService) {
     this.categoryService = CategoryService;
   }
+
   getCategory = async (req, res) => {
     try {
-      console.log('[GET_CATEGORY_CONTROLLER] req.query:', req.query);
       const { include, ...query } = req.query;
       const categories = await this.categoryService.getCategories({ ...query }, include ?? false);
       if (categories && categories.length) {
@@ -16,15 +16,47 @@ class CategoryController {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
+
+  getCategoryDropDown = async (req, res) => {
+    try {
+      const categories = await this.categoryService.getCategories({}, false, ['displayName', 'id']);
+      if (categories || categories.length) {
+        res.send(categories);
+      } else {
+        throw Error('[GET_CATEGORY_CONTROLLER] No categories found');
+      }
+    } catch (error) {
+      res.status(404).send({ error: true, message: error?.message ?? error });
+    }
+  };
+
+  getCategoryMenu = async (req, res) => {
+    try {
+      console.log('[GET_CATEGORY_CONTROLLER] req.query:', req.query);
+      const { include, ...query } = req.query;
+      const categories = await this.categoryService.getCategories({ ...query }, include ?? false, [
+        'description',
+        'displayName',
+        'imgUrl',
+        'id'
+      ]);
+
+      if (!categories || !categories.length) {
+        throw Error('[GET_CATEGORY_CONTROLLER] No categories found');
+      }
+      res.send(categories);
+    } catch (error) {
+      res.status(404).send({ error: true, message: error?.message ?? error });
+    }
+  };
   createCategory = async (req, res) => {
     try {
       console.log('[CREATE_CATEGORY_CONTROLLER] req.body:', req.body);
       const category = await this.categoryService.createCategory(req.body);
-      if (category) {
-        res.send(category);
-      } else {
+      if (!category || !category.length) {
         throw Error("[CREATE_CATEGORY_CONTROLLER] Couldn't create category");
       }
+      res.send(category);
     } catch (error) {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }

@@ -15,34 +15,38 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendMail(subject, html, to, pdfBuffer, orderId) {
-  subject = 'הזמנה קייטרינג גבאי';
-  const mailOptions = {
-    from: process.env.MAIL_USERNAME,
-    to,
-    cc: process.env.MAIL_USERNAME,
-    subject,
-    text: 'הזמנה קייטרינג גבאי',
-    html: html,
-    attachments: [{
-      filename: `order-${orderId}.pdf`,
-      content: Buffer(pdfBuffer),
-      contentType: 'application/pdf'
-    }],
-    auth: {
-      user: process.env.MAIL_USERNAME,
-      refreshToken: process.env.OAUTH_REFRESH_TOKEN,
-      expires: 1484314697598
-    }
-  };
-  transporter.sendMail(mailOptions, async (err) => {
-    if (err) {
-      console.log('Error' + err);
-    } else {
+  try {
+    const mailOptions = {
+      from: process.env.MAIL_USERNAME,
+      to,
+      cc: process.env.MAIL_USERNAME,
+      subject,
+      text: 'הזמנה קייטרינג גבאי',
+      html: html,
+      attachments: [
+        {
+          filename: `order-${orderId}.pdf`,
+          content: Buffer.from(pdfBuffer),
+          contentType: 'application/pdf'
+        }
+      ],
+      auth: {
+        user: process.env.MAIL_USERNAME,
+        refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+        expires: 1484314697598
+      }
+    };
+    transporter.sendMail(mailOptions, async (err) => {
+      if (err) {
+        throw new Error(err);
+      }
       console.log('Email Sent');
-
-    }
-  });
+    });
+  } catch (error) {
+    console.error('[Error-send email]: ', error);
+  }
 }
+
 module.exports = {
   sendMail
 };

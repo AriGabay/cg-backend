@@ -4,8 +4,10 @@ class cartController {
   }
   createOrder = async (req, res) => {
     try {
-      console.log('[CREATE_ORDER] req.body', req.body);
       const totalCart = await this.cartService.createOrder(req.body);
+      if (!totalCart || !Object.keys(totalCart).length) {
+        throw new Error('total cart is empty');
+      }
       res.send(totalCart);
     } catch (error) {
       console.error('[CREATE_ORDER] error:', error);

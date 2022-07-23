@@ -1,5 +1,5 @@
-const buildHtml = (orderAfterSave, userDetails, cart) => {
-    let htmlForEmail = `
+const buildHtml = (orderId, userDetails, cart) => {
+  let htmlForEmail = `
     <html dir="rtl">
 
 <head>
@@ -201,13 +201,16 @@ const buildHtml = (orderAfterSave, userDetails, cart) => {
   <div class="content">
       <div class="info">
           <p>
-              מספר הזמנה: ${orderAfterSave.id}<br>
+              מספר הזמנה: ${orderId}<br>
           </p>
           <p class="label">לקוח:</p>
           <p>
           ${userDetails.firstName} ${userDetails.lastName}<br>
           ${userDetails.mobile.substring(0, 3)}-${userDetails.mobile.substring(3, userDetails.mobile.length + 1)}<br>
-          ${userDetails.mobileTow.substring(0, 3)}-${userDetails.mobileTow.substring(3, userDetails.mobile.length + 1)}<br>
+          ${userDetails.mobileTow.substring(0, 3)}-${userDetails.mobileTow.substring(
+    3,
+    userDetails.mobile.length + 1
+  )}<br>
               ${userDetails.email}<br>
               ${userDetails.city}<br>
               ${userDetails.street}
@@ -230,8 +233,8 @@ const buildHtml = (orderAfterSave, userDetails, cart) => {
                   </tr>
 
     `;
-    cart.products.forEach((product) => {
-        htmlForEmail += `<tr class="item">
+  cart.products.forEach((product) => {
+    htmlForEmail += `<tr class="item">
       <td>
       ${product.displayName} <br>
       </td>
@@ -239,8 +242,8 @@ const buildHtml = (orderAfterSave, userDetails, cart) => {
       <td>${product.pricePerSize.toFixed(2)} ₪</td>
   </tr>
       `;
-    });
-    htmlForEmail += `<tr class="total">
+  });
+  htmlForEmail += `<tr class="total">
     <td>סיכום הזמנה</td>
     <td class="oneContainer">
     <td class="ThirdContainer">מחיר משוער :</td>
@@ -277,20 +280,20 @@ const buildHtml = (orderAfterSave, userDetails, cart) => {
 </div>
 </div>
 </body>
-</html>`
-    return { htmlForEmail }
-}
+</html>`;
+  return htmlForEmail;
+};
 
 const checkPriceType = (product) => {
-    if (product.Price.priceType === 'box') {
-        return `קופסה ${product.sizeToOrder} גרם`;
-    } else if (product.Price.priceType === 'unit') {
-        return `יחידות ${product.sizeToOrder}`;
-    } else if (product.Price.priceType === 'weight') {
-        return `${product.sizeToOrder} גרם`;
-    }
-}
+  if (product.Price.priceType === 'box') {
+    return `קופסה ${product.sizeToOrder} גרם`;
+  } else if (product.Price.priceType === 'unit') {
+    return `יחידות ${product.sizeToOrder}`;
+  } else if (product.Price.priceType === 'weight') {
+    return `${product.sizeToOrder} גרם`;
+  }
+};
 
 module.exports = {
-    buildHtml
+  buildHtml
 };

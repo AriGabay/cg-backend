@@ -5,7 +5,7 @@ class CategoryService {
     try {
       const query = undefined;
       const include = false;
-      const data = await this.getCategories(query, include);
+      const data = await this.getCategories(query, include, ['displayName']);
       if (data && data.length) {
         data.forEach((element) => {
           if (element.displayName === body.displayName) {
@@ -23,14 +23,14 @@ class CategoryService {
     }
   }
 
-  async getCategories(query, include = false) {
+  async getCategories(query, include = false, attributes = ['*'], raw = true) {
     try {
-      if (include === 'true') include = true;
-      if (include === 'false') include = false;
       const includeConfig = { all: include, nested: include };
       const res = await db.Category.findAll({
         where: { ...query },
-        include: include ? includeConfig.separate : undefined
+        include: include ? includeConfig.separate : undefined,
+        attributes: attributes,
+        raw: raw
       });
       return res;
     } catch (error) {

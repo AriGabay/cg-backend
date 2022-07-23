@@ -4,11 +4,9 @@ const { Op } = require('sequelize');
 class OrderService {
   async getOrders(query, include = false) {
     try {
-      if (include === 'true') include = true;
-      if (include === 'false') include = false;
       const includeConfig = { all: include, nested: include };
       const orders = await db.Order.findAll({ where: { ...query }, include: include ? includeConfig : undefined });
-      orders.map((order) => {
+      orders.forEach((order) => {
         order.order = JSON.parse(order.order);
       });
       return orders;
@@ -25,21 +23,16 @@ class OrderService {
       orders.forEach((order) => {
         order.order = JSON.parse(order.order);
         if (order.order.products) {
-          order.order.products.forEach((product) => totalProducts.push(product));
+          order.order.products.forEach((product) => {
+            if (!totalProducts[product.id]) {
+              totalProducts[product.id] = product;
+            } else {
+              totalProducts[product.id].sizeToOrder += product.sizeToOrder;
+            }
+          });
         }
       });
-      const calcTotalProducts = [];
-      totalProducts.forEach((product) => {
-        if (calcTotalProducts.some((prod) => product.id === prod.id)) {
-          const idx = calcTotalProducts.findIndex((pro) => pro.id === product.id);
-          calcTotalProducts[idx].sizeToOrder += product.sizeToOrder;
-        } else {
-          calcTotalProducts.push(product);
-        }
-      });
-
-      const arr = [orders, calcTotalProducts, totalProducts.length];
-      return arr;
+      return { orders, totalProducts: { ...totalProducts } };
     } catch (error) {
       console.error({ error: true, message: error?.message ?? error });
     }

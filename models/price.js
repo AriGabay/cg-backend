@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
 
       Price.hasMany(models.Product, {
         foreignKey: 'priceId',
-        separate: true // does magic; only with .hasMany associations
+        // separate: true, // does magic; only with .hasMany associations
+        onDelete: 'CASCADE'
       });
     }
   }

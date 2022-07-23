@@ -1,4 +1,6 @@
 const myUrl = '/api/product';
+const { log } = require('../../middlewares/logger.middleware');
+const { parseQueryParm } = require('../../middlewares/parseQueryParam');
 class ProductRoute {
   constructor(app, ProductController) {
     this.ProductController = ProductController;
@@ -8,12 +10,16 @@ class ProductRoute {
     this.update();
     this.remove();
     this.getAll();
+    this.getByMenu();
   }
   get() {
-    this.app.get(myUrl, this.ProductController.getProduct);
+    this.app.get(myUrl, log, parseQueryParm, this.ProductController.getProduct);
   }
   getAll() {
     this.app.get(myUrl + '/all', this.ProductController.getAllProducts);
+  }
+  getByMenu() {
+    this.app.get(myUrl + '/byMenu', parseQueryParm, this.ProductController.getProductByMenu);
   }
   post() {
     this.app.post(myUrl, this.ProductController.createProduct);

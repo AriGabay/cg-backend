@@ -5,16 +5,33 @@ class ProductController {
   getProduct = async (req, res) => {
     try {
       const { include, ...query } = req.query;
-      const products = await this.productService.getProducts({ ...query }, include ?? false);
-      if (products && products.length) {
+      const products = await this.productService.getProducts({ ...query });
+      if (products) {
         res.send(products);
       } else {
-        throw Error('No product found');
+        throw new Error('No products found');
       }
     } catch (error) {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
+  getProductByMenu = async (req, res) => {
+    try {
+      const { include, ...query } = req.query;
+      const products = await this.productService.getProducts(
+        { ...query },
+        ['displayName', 'description', 'id', 'imgUrl'],
+        ['displayName']
+      );
+      if (!products || !products.length) {
+        throw Error('No product found');
+      }
+      res.send(products);
+    } catch (error) {
+      res.status(404).send({ error: true, message: error?.message ?? error });
+    }
+  };
+
   createProduct = async (req, res) => {
     try {
       const result = await this.productService.createProduct({ newProduct: req.body });
