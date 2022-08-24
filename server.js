@@ -20,6 +20,9 @@ const SizePriceRoute = require('./api/sizePrice/sizePrice.routes');
 const CartService = require('./api/cart/cart.service');
 const CartController = require('./api/cart/cart.controller');
 const CartRoute = require('./api/cart/cart.routes');
+const IsMenuEnableService = require('./api/isMenuEnable/isMenuEnable.service.js');
+const IsMenuEnableController = require('./api/isMenuEnable/isMenuEnable.controller.js');
+const IsMenuEnabletRoute = require('./api/isMenuEnable/isMenuEnable.routes.js');
 
 const AuthService = require('./api/auth/auth.service');
 const AuthController = require('./api/auth/auth.controller');
@@ -35,7 +38,7 @@ dotenv.config();
 const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware');
 
 const logger = require('./services/logger.service');
-const { parseQueryParm } = require('./middlewares/parseQueryParam');
+// const { parseQueryParm } = require('./middlewares/parseQueryParam');
 
 const app = express();
 const http = require('http').createServer(app);
@@ -89,6 +92,10 @@ db.sequelize.sync().then(() => {
   const orderService = new OrderService();
   const orderController = new OrderController(orderService);
   new OrderRoute(app, orderController);
+
+  const isMenuEnableService = new IsMenuEnableService();
+  const isMenuEnableController = new IsMenuEnableController(isMenuEnableService);
+  new IsMenuEnabletRoute(app, isMenuEnableController);
 
   const authService = new AuthService();
   const authController = new AuthController(authService, bcryptjs, jwt, logger);
