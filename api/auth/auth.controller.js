@@ -11,11 +11,20 @@ class authController {
       if (result && result.length) {
         this.bcryptjs.compare(req.body.password, result, (err, result) => {
           if (result) {
-            return this.jwt.sign({ userName: req.body.userName }, 'secret', (err, token) => {
-              res.status(200).json({ msg: 'Auth Successful !', token });
-            });
+            return this.jwt.sign(
+              { userName: req.body.userName },
+              'secret',
+              (err, token) => {
+                res.status(200).json({
+                  msg: 'Auth Successful !',
+                  token,
+                });
+              }
+            );
           } else {
-            res.status(500).json({ msg: 'Something went wrong !' });
+            res.status(500).json({
+              msg: 'Something went wrong !',
+            });
           }
         });
       } else {
@@ -29,7 +38,10 @@ class authController {
     try {
       const result = await this.authService.signUp(req.body);
       if (result && result.length) {
-        res.status(201).json({ msg: 'User created successfully', result: result });
+        res.status(201).json({
+          msg: 'User created successfully',
+          result: result,
+        });
       } else {
         res.status(500).json({ msg: 'Something went wrong !' });
       }

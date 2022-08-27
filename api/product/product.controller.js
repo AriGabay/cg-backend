@@ -4,6 +4,7 @@ class ProductController {
   }
   getProduct = async (req, res) => {
     try {
+      // eslint-disable-next-line no-unused-vars
       const { include, ...query } = req.query;
       const products = await this.productService.getProducts({ ...query });
       if (products) {
@@ -17,6 +18,7 @@ class ProductController {
   };
   getProductByMenu = async (req, res) => {
     try {
+      // eslint-disable-next-line no-unused-vars
       const { include, ...query } = req.query;
       const products = await this.productService.getProducts(
         { ...query },

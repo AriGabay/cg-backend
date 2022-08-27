@@ -17,11 +17,15 @@ class authService {
   signUp = async (user) => {
     try {
       return await bcryptjs.genSalt(10, async (err, salt) => {
-        const result = await bcryptjs.hash(user.password, salt, async (err, hash) => {
-          const use = { userName: user.userName, password: hash };
-          const res = await db.User.create(use);
-          return res;
-        });
+        const result = await bcryptjs.hash(
+          user.password,
+          salt,
+          async (err, hash) => {
+            const use = { userName: user.userName, password: hash };
+            const res = await db.User.create(use);
+            return res;
+          }
+        );
         return result;
       });
     } catch (error) {
