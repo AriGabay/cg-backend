@@ -23,23 +23,15 @@ const CartRoute = require('./api/cart/cart.routes');
 const IsMenuEnableService = require('./api/isMenuEnable/isMenuEnable.service.js');
 const IsMenuEnableController = require('./api/isMenuEnable/isMenuEnable.controller.js');
 const IsMenuEnabletRoute = require('./api/isMenuEnable/isMenuEnable.routes.js');
-
 const AuthService = require('./api/auth/auth.service');
 const AuthController = require('./api/auth/auth.controller');
 const AuthRoute = require('./api/auth/auth.routes');
-
 const dotenv = require('dotenv');
+dotenv.config();
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
-dotenv.config();
-
-// routes
 const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware');
-
 const logger = require('./services/logger.service');
-// const { parseQueryParm } = require('./middlewares/parseQueryParam');
-
 const app = express();
 const http = require('http').createServer(app);
 
@@ -49,7 +41,7 @@ app.use(
     exposedHeaders: ['sessionId'],
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false
+    preflightContinue: false,
   })
 );
 
@@ -57,13 +49,11 @@ const session = expressSession({
   secret: process.env.SecretPasswordSession,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: false },
 });
 
-// Express App Config
 app.use(session);
 app.use(express.json());
-// app.use(parseQueryParm);
 app.all('*', setupAsyncLocalStorage);
 
 const port = process.env.PORT || 3030;
@@ -94,7 +84,9 @@ db.sequelize.sync().then(() => {
   new OrderRoute(app, orderController);
 
   const isMenuEnableService = new IsMenuEnableService();
-  const isMenuEnableController = new IsMenuEnableController(isMenuEnableService);
+  const isMenuEnableController = new IsMenuEnableController(
+    isMenuEnableService
+  );
   new IsMenuEnabletRoute(app, isMenuEnableController);
 
   const authService = new AuthService();

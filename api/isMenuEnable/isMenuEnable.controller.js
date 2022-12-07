@@ -4,7 +4,6 @@ class isMenuEnableController {
   }
   setIsMenuEnable = async (req, res) => {
     try {
-      console.log('req.body   :', req.body);
       if (!Object.keys(req.body).length) {
         return;
       }

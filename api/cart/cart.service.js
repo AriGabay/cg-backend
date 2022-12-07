@@ -7,32 +7,39 @@ class CartService {
   async createOrder(cart) {
     if (!cart.length) throw new Error('cart is empty !');
     const totalCart = {
-      time: new Date()
+      time: new Date(),
     };
     totalCart.products = cart.map((totalProductFromFront) => {
       const { sizeToOrder, product } = totalProductFromFront;
       let pricePerSize = 0;
       if (product.Price.priceType === 'weight') {
         if (product.Price.SizePrices[0].size) {
-          pricePerSize = (sizeToOrder / 100) * product.Price.SizePrices[0].amount;
+          pricePerSize =
+            (sizeToOrder / 100) * product.Price.SizePrices[0].amount;
         } else {
           throw new Error('product size must be = 100');
         }
       } else if (product.Price.priceType === 'box') {
         if (product.Price.SizePrices.length > 0) {
-          const [size] = product.Price.SizePrices.filter((sizePrice) => sizePrice.size === sizeToOrder);
+          const [size] = product.Price.SizePrices.filter(
+            (sizePrice) => sizePrice.size === sizeToOrder
+          );
           pricePerSize = size.amount;
         } else {
           throw new Error('product size empty');
         }
       } else if (product.Price.priceType === 'unit') {
         if (product.Price.SizePrices[0].size > 0) {
-          pricePerSize = product.Price.SizePrices[0].amount * (sizeToOrder / product.Price.SizePrices[0].size);
+          pricePerSize =
+            product.Price.SizePrices[0].amount *
+            (sizeToOrder / product.Price.SizePrices[0].size);
         } else {
           throw new Error('product size need big from 0');
         }
       }
-      totalCart.totalPrice ? (totalCart.totalPrice += pricePerSize) : (totalCart.totalPrice = pricePerSize);
+      totalCart.totalPrice
+        ? (totalCart.totalPrice += pricePerSize)
+        : (totalCart.totalPrice = pricePerSize);
       return { ...product, sizeToOrder, pricePerSize };
     });
     totalCart.Tax = +(totalCart.totalPrice * 0.17).toFixed(2);
@@ -43,11 +50,18 @@ class CartService {
 
   async buildHtml(cart, userDetails) {
     try {
-      const { id: orderId } = await db.Order.create({ order: JSON.stringify({ ...userDetails, ...cart }) });
-      // const orderId = orderFromDb.id;
+      const { id: orderId } = await db.Order.create({
+        order: JSON.stringify({ ...userDetails, ...cart }),
+      });
       const htmlForEmail = buildHtml(orderId, userDetails, cart);
       const bufferPdf = buildPdf(orderId, userDetails, cart);
-      await emailService.sendMail('הזמנה חדשה קייטרינג גבאי', htmlForEmail, userDetails.email, bufferPdf, orderId);
+      await emailService.sendMail(
+        'הזמנה חדשה קייטרינג גבאי',
+        htmlForEmail,
+        userDetails.email,
+        bufferPdf,
+        orderId
+      );
     } catch (error) {
       console.log('[BUILD_HTML] error:', error);
     }

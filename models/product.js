@@ -2,20 +2,14 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       Product.belongsTo(models.Price, {
         foreignKey: 'priceId',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
       });
       Product.belongsTo(models.Category, {
         foreignKey: 'categoryId',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
       });
     }
   }
@@ -30,11 +24,11 @@ module.exports = (sequelize, DataTypes) => {
       kitniyot: DataTypes.BOOLEAN,
       isMenuPesach: DataTypes.BOOLEAN,
       isMenuTishray: DataTypes.BOOLEAN,
-      isMenuWeekend: DataTypes.BOOLEAN
+      isMenuWeekend: DataTypes.BOOLEAN,
     },
     {
       sequelize,
-      modelName: 'Product'
+      modelName: 'Product',
     }
   );
   return Product;

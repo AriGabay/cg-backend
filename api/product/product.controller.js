@@ -36,7 +36,9 @@ class ProductController {
 
   createProduct = async (req, res) => {
     try {
-      const result = await this.productService.createProduct({ newProduct: req.body });
+      const result = await this.productService.createProduct({
+        newProduct: req.body,
+      });
       if (result) {
         res.send(result);
       } else {
@@ -65,7 +67,9 @@ class ProductController {
       const dataToEdit = { ...body };
       const result = await this.productService.updateProduct(id, dataToEdit);
       if (result.length) {
-        res.send(`success update product : ${dataToEdit.displayName} id : ${id}`);
+        res.send(
+          `success update product : ${dataToEdit.displayName} id : ${id}`
+        );
       } else {
         throw Error('Can not update product');
       }
@@ -76,7 +80,10 @@ class ProductController {
   getAllProducts = async (req, res) => {
     try {
       const { include, ...query } = req.query;
-      const products = await this.productService.getAllProducts({ ...query }, include ?? false);
+      const products = await this.productService.getAllProducts(
+        { ...query },
+        include ?? false
+      );
       if (products && products.length) {
         res.send(products);
       } else {
