@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./models/index');
+const dbGannayEyalon = require('./models-gannay-eylon/index');
 const expressSession = require('express-session');
 const CategoryService = require('./api/category/category.service');
 const CategoryController = require('./api/category/category.controller');
@@ -26,12 +27,18 @@ const IsMenuEnabletRoute = require('./api/isMenuEnable/isMenuEnable.routes.js');
 const AuthService = require('./api/auth/auth.service');
 const AuthController = require('./api/auth/auth.controller');
 const AuthRoute = require('./api/auth/auth.routes');
+const ProductGnService = require('./api/gannay-eylon-api/product/product.service');
+const ProductGnController = require('./api/gannay-eylon-api/product/product.controller');
+const ProductGnRoute = require('./api/gannay-eylon-api/product/product.routes');
 const dotenv = require('dotenv');
 dotenv.config();
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware');
 const logger = require('./services/logger.service');
+const CategoryGnService = require('./api/gannay-eylon-api/category/category.service');
+const CategoryGnController = require('./api/gannay-eylon-api/category/category.controller');
+const CategoryGnRoute = require('./api/gannay-eylon-api/category/category.routes');
 const app = express();
 const http = require('http').createServer(app);
 
@@ -93,7 +100,19 @@ db.sequelize.sync().then(() => {
   const authController = new AuthController(authService, bcryptjs, jwt, logger);
   new AuthRoute(app, authController);
 
-  http.listen(port, () => {
-    logger.info('Server is running on port: ' + port);
-  });
+  dbGannayEyalon.sequelize
+    .sync()
+    .then(() => {
+      const productGnService = new ProductGnService();
+      const productGnController = new ProductGnController(productGnService);
+      new ProductGnRoute(app, productGnController);
+
+      const categoryGnService = new CategoryGnService();
+      const categoryGnController = new CategoryGnController(categoryGnService);
+      new CategoryGnRoute(app, categoryGnController);
+      http.listen(port, () => {
+        logger.info('Server is running on port: ' + port);
+      });
+    })
+    .catch((err) => console.log('errrrr:', err));
 });
