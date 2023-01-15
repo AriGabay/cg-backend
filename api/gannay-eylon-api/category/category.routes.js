@@ -12,10 +12,16 @@ class CategoryGnRoute {
     this.app.get(myUrl, this.CategoryGnController.getCategories);
   }
   remove() {
-    this.app.delete(myUrl, this.CategoryGnController.removeCategory);
+    this.app.delete(
+      myUrl + '/:categoryId',
+      this.CategoryGnController.removeCategory
+    );
   }
   update() {
-    this.app.put(myUrl, this.CategoryGnController.updateCategory);
+    this.app.put(
+      myUrl + '/:categoryId',
+      this.CategoryGnController.updateCategory
+    );
   }
   create() {
     this.app.post(myUrl, this.CategoryGnController.createCategory);

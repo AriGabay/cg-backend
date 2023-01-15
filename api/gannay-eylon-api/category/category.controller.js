@@ -5,7 +5,7 @@ class CategoryGnController {
 
   getCategories = async (req, res) => {
     try {
-      const categories = await this.CategoryGnService.getCategories();
+      const categories = await this.CategoryGnService.getCategories(req.query);
       if (categories && categories.length) {
         res.send(categories);
       } else {
@@ -17,10 +17,10 @@ class CategoryGnController {
   };
   removeCategory = async (req, res) => {
     try {
-      const { id } = req.params;
-      const result = await this.CategoryGnService.removeCategory(id);
+      const { categoryId } = req.params;
+      const result = await this.CategoryGnService.removeCategory(categoryId);
       if (result === 1) {
-        res.send(`success remove category id : ${id}`);
+        res.send(`success remove category id : ${categoryId}`);
       } else {
         throw Error('Can not remove category');
       }
@@ -28,10 +28,9 @@ class CategoryGnController {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
-  updateCategory = async ({ body, params }, res) => {
+  updateCategory = async ({ body }, res) => {
     try {
-      const id = params.id;
-      const dataToEdit = { ...body };
+      const { id, ...dataToEdit } = body;
       const result = await this.CategoryGnService.updateCategory(
         id,
         dataToEdit

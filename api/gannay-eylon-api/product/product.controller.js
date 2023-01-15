@@ -5,7 +5,7 @@ class OnlineMenuController {
 
   getProducts = async (req, res) => {
     try {
-      const productsMenu = await this.ProductGnService.getProducts();
+      const productsMenu = await this.ProductGnService.getProducts(req.query);
       if (productsMenu && productsMenu.length) {
         res.send(productsMenu);
       } else {
@@ -17,10 +17,10 @@ class OnlineMenuController {
   };
   removeProduct = async (req, res) => {
     try {
-      const { id } = req.params;
-      const result = await this.ProductGnService.removeProduct(id);
+      const { productId } = req.params;
+      const result = await this.ProductGnService.removeGnProduct(productId);
       if (result === 1) {
-        res.send(`success remove product id : ${id}`);
+        res.send(`success remove product id : ${productId}`);
       } else {
         throw Error('Can not remove product');
       }
@@ -28,11 +28,14 @@ class OnlineMenuController {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
-  updateProduct = async ({ body, params }, res) => {
+  updateProduct = async ({ body }, res) => {
     try {
-      const id = params.id;
-      const dataToEdit = { ...body };
-      const result = await this.ProductGnService.updateProduct(id, dataToEdit);
+      // const id = params.id;
+      const { id, ...dataToEdit } = { ...body };
+      const result = await this.ProductGnService.updateGnProduct(
+        id,
+        dataToEdit
+      );
       if (result.length) {
         res.send(`success update product id : ${id}`);
       } else {

@@ -12,10 +12,13 @@ class ProductGnRoute {
     this.app.get(myUrl, this.ProductGnController.getProducts);
   }
   remove() {
-    this.app.delete(myUrl, this.ProductGnController.removeProduct);
+    this.app.delete(
+      myUrl + '/:productId',
+      this.ProductGnController.removeProduct
+    );
   }
   update() {
-    this.app.put(myUrl, this.ProductGnController.updateProduct);
+    this.app.put(myUrl + '/:productId', this.ProductGnController.updateProduct);
   }
   create() {
     this.app.post(myUrl, this.ProductGnController.createProduct);
