@@ -10,6 +10,7 @@ class ProductGnService {
           'imgUrl',
           'description',
           'categoryId',
+          'autoAdd',
         ],
       };
       if (Object.keys(query).length) {

@@ -10,8 +10,8 @@ const transporter = nodemailer.createTransport({
     pass: process.env.MAIL_PASSWORD,
     clientId: process.env.OAUTH_CLIENTID,
     clientSecret: process.env.OAUTH_CLIENT_SECRET,
-    refreshToken: process.env.OAUTH_REFRESH_TOKEN
-  }
+    refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+  },
 });
 
 async function sendMail(subject, html, to, pdfBuffer, orderId) {
@@ -27,14 +27,45 @@ async function sendMail(subject, html, to, pdfBuffer, orderId) {
         {
           filename: `order-${orderId}.pdf`,
           content: Buffer.from(pdfBuffer),
-          contentType: 'application/pdf'
-        }
+          contentType: 'application/pdf',
+        },
       ],
       auth: {
         user: process.env.MAIL_USERNAME,
         refreshToken: process.env.OAUTH_REFRESH_TOKEN,
-        expires: 1484314697598
+        expires: 1484314697598,
+      },
+    };
+    transporter.sendMail(mailOptions, async (err) => {
+      if (err) {
+        throw new Error(err);
       }
+      console.log('Email Sent');
+    });
+  } catch (error) {
+    console.error('[Error-send email]: ', error);
+  }
+}
+async function sendMailGn(pdfBuffer, eventId) {
+  try {
+    const mailOptions = {
+      from: process.env.MAIL_USERNAME,
+      to: 'arigabay19988@gmail.com',
+      cc: process.env.MAIL_USERNAME,
+      subject: 'תפריט אירוע חדש',
+      text: 'תפריט אירוע חדש',
+      attachments: [
+        {
+          filename: `event-${eventId}.pdf`,
+          content: Buffer.from(pdfBuffer),
+          contentType: 'application/pdf',
+        },
+      ],
+      auth: {
+        user: process.env.MAIL_USERNAME,
+        refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+        expires: 1484314697598,
+      },
     };
     transporter.sendMail(mailOptions, async (err) => {
       if (err) {
@@ -48,5 +79,6 @@ async function sendMail(subject, html, to, pdfBuffer, orderId) {
 }
 
 module.exports = {
-  sendMail
+  sendMail,
+  sendMailGn,
 };

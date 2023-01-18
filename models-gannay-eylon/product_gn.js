@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       productName: DataTypes.STRING,
       description: DataTypes.STRING,
       imgUrl: DataTypes.STRING,
+      autoAdd: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0,
+      },
     },
     {
       sequelize,

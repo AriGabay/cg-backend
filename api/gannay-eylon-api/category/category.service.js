@@ -6,7 +6,7 @@ class CategoryGnService {
       const options = {
         attributes: ['id', 'displayName'],
       };
-      if (Object.keys(query).length) {
+      if (query && Object.keys(query).length) {
         options.where = { ...query };
       }
       return await db.CategoryGn.findAll({ ...options });

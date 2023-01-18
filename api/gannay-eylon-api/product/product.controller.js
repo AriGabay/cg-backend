@@ -30,7 +30,6 @@ class OnlineMenuController {
   };
   updateProduct = async ({ body }, res) => {
     try {
-      // const id = params.id;
       const { id, ...dataToEdit } = { ...body };
       const result = await this.ProductGnService.updateGnProduct(
         id,

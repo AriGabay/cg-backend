@@ -39,6 +39,9 @@ const logger = require('./services/logger.service');
 const CategoryGnService = require('./api/gannay-eylon-api/category/category.service');
 const CategoryGnController = require('./api/gannay-eylon-api/category/category.controller');
 const CategoryGnRoute = require('./api/gannay-eylon-api/category/category.routes');
+const EventDeatilsService = require('./api/gannay-eylon-api/eventDetails/eventDetails.service');
+const EventDeatilsController = require('./api/gannay-eylon-api/eventDetails/eventDetails.controller');
+const EventDeatilsRoute = require('./api/gannay-eylon-api/eventDetails/eventDetails.routes');
 const app = express();
 const http = require('http').createServer(app);
 
@@ -110,6 +113,13 @@ db.sequelize.sync().then(() => {
       const categoryGnService = new CategoryGnService();
       const categoryGnController = new CategoryGnController(categoryGnService);
       new CategoryGnRoute(app, categoryGnController);
+
+      const eventDeatilsService = new EventDeatilsService();
+      const eventDeatilsController = new EventDeatilsController(
+        eventDeatilsService,
+        categoryGnService
+      );
+      new EventDeatilsRoute(app, eventDeatilsController);
       http.listen(port, () => {
         logger.info('Server is running on port: ' + port);
       });

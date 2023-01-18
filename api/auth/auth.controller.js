@@ -9,24 +9,26 @@ class authController {
     try {
       const result = await this.authService.login({ user: req.body });
       if (result && result.length) {
-        this.bcryptjs.compare(req.body.password, result, (err, result) => {
-          if (result) {
-            return this.jwt.sign(
-              { userName: req.body.userName },
-              'secret',
-              (err, token) => {
-                res.status(200).json({
-                  msg: 'Auth Successful !',
-                  token,
-                });
-              }
-            );
-          } else {
-            res.status(500).json({
-              msg: 'Something went wrong !',
-            });
-          }
-        });
+        const isEqual = await this.bcryptjs.compareSync(
+          req.body.password,
+          result
+        );
+        if (isEqual) {
+          return this.jwt.sign(
+            { userName: req.body.userName },
+            'secret',
+            (err, token) => {
+              res.status(200).json({
+                msg: 'Auth Successful !',
+                token,
+              });
+            }
+          );
+        } else {
+          res.status(500).json({
+            msg: 'Something went wrong !',
+          });
+        }
       } else {
         res.status(500).json({ msg: 'Something went wrong !' });
       }
