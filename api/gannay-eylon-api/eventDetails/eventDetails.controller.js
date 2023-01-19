@@ -9,6 +9,17 @@ class eventDetailsController {
 
   sendEventDetails = async (req, res) => {
     try {
+      if (
+        !req.body ||
+        !req.body.eventDetails ||
+        !req.body.eventInfo ||
+        !req.body.hashTitle ||
+        !Object.keys(req.body.eventDetails).length ||
+        !Object.keys(req.body.eventInfo).length ||
+        !Object.keys(req.body.hashTitle).length
+      ) {
+        throw new Error('mising params');
+      }
       const categories = await this.CategoryGnService.getCategories();
       const hashMap = {};
       categories.forEach((category) => {
