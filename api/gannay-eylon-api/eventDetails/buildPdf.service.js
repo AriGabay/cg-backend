@@ -33,7 +33,7 @@ const buildPdf = (eventDetails, hashMapCategories, eventInfo, hashTitle) => {
     tableWidth: 150,
   });
   doc.autoTable({
-    head: [['תיאור', 'מוצר', 'קטגוריה']],
+    head: [['תיאור', 'הערות', 'מוצר', 'קטגוריה']],
     body: rows,
     styles: { font: 'david', halign: 'right' },
     headStyles: { fillColor: '#f5efdf', textColor: 'black' },
@@ -56,6 +56,7 @@ const buildPdf = (eventDetails, hashMapCategories, eventInfo, hashTitle) => {
   }
   const arrayBuffer = doc.output('arraybuffer');
   const buffer = Buffer.from(arrayBuffer);
+  fs.writeFileSync('./test.pdf', buffer);
   return buffer;
 };
 
@@ -77,10 +78,11 @@ const buildRow = (eventDetails, hashMapCategories) => {
   const rows = [];
   Object.keys(eventDetails).forEach((categoryIdHashMap) => {
     return Object.keys(eventDetails[categoryIdHashMap]).forEach((productId) => {
-      const { productName, description, categoryId } =
+      const { productName, description, categoryId, comment } =
         eventDetails[categoryIdHashMap][productId];
       rows.push([
         description,
+        comment,
         productName,
         hashMapCategories[categoryId].dataValues.displayName,
       ]);
