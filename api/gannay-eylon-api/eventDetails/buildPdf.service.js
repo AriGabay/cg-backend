@@ -78,8 +78,9 @@ const buildRow = (eventDetails, hashMapCategories) => {
   const rows = [];
   Object.keys(eventDetails).forEach((categoryIdHashMap) => {
     return Object.keys(eventDetails[categoryIdHashMap]).forEach((productId) => {
-      const { productName, description, categoryId, comment } =
+      const { productName, description, categoryId, comment, autoAdd } =
         eventDetails[categoryIdHashMap][productId];
+      if (!autoAdd) return;
       rows.push([
         description,
         comment,

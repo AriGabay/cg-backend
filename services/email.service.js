@@ -50,7 +50,7 @@ async function sendMailGn(pdfBuffer, eventId) {
   try {
     const mailOptions = {
       from: process.env.MAIL_USERNAME,
-      to: 'kgabay@gmail.com',
+      to: 'kgabayt@gmail.com',
       cc: process.env.MAIL_USERNAME,
       subject: 'תפריט אירוע חדש',
       text: 'תפריט אירוע חדש',
