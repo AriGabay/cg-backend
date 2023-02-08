@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'IsMenuEnable',
+      tableName: 'ismenuenables',
     }
   );
   return IsMenuEnable;

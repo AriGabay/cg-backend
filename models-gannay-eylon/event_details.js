@@ -7,10 +7,13 @@ module.exports = (sequelize, DataTypes) => {
   EventDetails.init(
     {
       eventDetails: DataTypes.TEXT('long'),
+      eventDate: DataTypes.STRING,
+      eventInfo: DataTypes.TEXT('long'),
     },
     {
       sequelize,
       modelName: 'EventDetails',
+      tableName: 'eventdetails',
     }
   );
 

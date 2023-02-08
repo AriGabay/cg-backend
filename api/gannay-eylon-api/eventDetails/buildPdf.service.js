@@ -56,7 +56,7 @@ const buildPdf = (eventDetails, hashMapCategories, eventInfo, hashTitle) => {
   }
   const arrayBuffer = doc.output('arraybuffer');
   const buffer = Buffer.from(arrayBuffer);
-  fs.writeFileSync('./test.pdf', buffer);
+  // fs.writeFileSync('./test.pdf', buffer);
   return buffer;
 };
 

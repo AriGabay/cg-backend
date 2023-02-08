@@ -41,5 +41,17 @@ class eventDetailsController {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
+  getEventDetails = async (req, res) => {
+    try {
+      const query = { ...req.query };
+      const eventBy = await this.EventDetailsService.getEventDetailsBy(query);
+      if (!Object.keys(eventBy).length) {
+        throw Error('event not found');
+      }
+      res.json(eventBy);
+    } catch (error) {
+      res.status(404).send({ error: true, message: error?.message ?? error });
+    }
+  };
 }
 module.exports = eventDetailsController;
