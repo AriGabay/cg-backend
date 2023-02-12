@@ -35,7 +35,7 @@ class eventDetailsController {
       const eventDetails = await this.EventDetailsService.createEventDetails(
         restData
       );
-      await sendMailGn(pdfBuffer, eventDetails.id);
+      await sendMailGn(pdfBuffer, eventDetails.id, eventInfoInputs?.email);
       res.send('sent !');
     } catch (error) {
       res.status(404).send({ error: true, message: error?.message ?? error });

@@ -46,11 +46,13 @@ async function sendMail(subject, html, to, pdfBuffer, orderId) {
     console.error('[Error-send email]: ', error);
   }
 }
-async function sendMailGn(pdfBuffer, eventId) {
+async function sendMailGn(pdfBuffer, eventId, toEmailAddres = '') {
   try {
     const mailOptions = {
       from: process.env.MAIL_USERNAME,
-      to: 'kgabayt@gmail.com',
+      to: toEmailAddres
+        ? [toEmailAddres, 'kgabayt@gmail.com']
+        : 'kgabayt@gmail.com',
       cc: process.env.MAIL_USERNAME,
       subject: 'תפריט אירוע חדש',
       text: 'תפריט אירוע חדש',
