@@ -27,7 +27,7 @@ class eventDetailsController {
       ) {
         throw new Error('mising params');
       }
-      const hashMap = this.createHashMapCategories();
+      const hashMap = await this.createHashMapCategories();
       const pdfBuffer = buildPdf(
         req.body.eventDetails,
         hashMap,
