@@ -37,7 +37,7 @@ const buildPdf = (eventDetails, hashMapCategories, eventInfo, hashTitle) => {
     body: rows,
     styles: { font: 'david', halign: 'right' },
     headStyles: { fillColor: '#f5efdf', textColor: 'black' },
-    startY: doc.autoTable.previous.finalY + 1000,
+    // startY: doc.autoTable.previous.finalY + 1000,
   });
   doc.text(
     'חתימה דיגיטלית :',
@@ -61,17 +61,22 @@ const buildPdf = (eventDetails, hashMapCategories, eventInfo, hashTitle) => {
 };
 
 const buildRowEventInfo = (eventInfo, hashTitle) => {
-  return Object.keys(hashTitle).map((englishTitle) => {
+  const rows = [];
+  Object.keys(hashTitle).forEach((englishTitle) => {
     if (eventInfo[englishTitle] && eventInfo[englishTitle].match('.*[a-z].*')) {
       hashTitle[englishTitle] = fix(hashTitle[englishTitle]);
       eventInfo[englishTitle] = fix(eventInfo[englishTitle]);
     }
-    return [
+    if (!eventInfo[englishTitle]) {
+      return;
+    }
+    rows.push([
       `${hashTitle[englishTitle]}  ${
         eventInfo[englishTitle] ? eventInfo[englishTitle] : ''
       } `,
-    ];
+    ]);
   });
+  return rows;
 };
 
 const buildRow = (eventDetails, hashMapCategories) => {

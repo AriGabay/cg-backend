@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       eventDetails: DataTypes.TEXT('long'),
       eventDate: DataTypes.STRING,
       eventInfo: DataTypes.TEXT('long'),
+      hashTitle: DataTypes.TEXT('long'),
     },
     {
       sequelize,
