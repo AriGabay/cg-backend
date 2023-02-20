@@ -8,13 +8,12 @@ const buildPdf = (eventDetails, hashMapCategories, eventInfo, hashTitle) => {
   const file = fs.readFileSync(
     path.resolve(__dirname, 'cg-backend', '../../../../assets/logo-gold(1).png')
   );
-  const doc = new jsPDF({ unit: 'px' });
+  const doc = new jsPDF('p', 'px', 'a4');
   doc.setR2L(true);
   doc.addFileToVFS('david.ttf', font);
   doc.addFont('david.ttf', 'david', 'normal');
   doc.setFont('david');
   doc.setFontSize(16);
-  const rows = buildRow(eventDetails, hashMapCategories);
   const maxRightPage = 320;
   const topPage = 10;
   doc.setFontSize(25);
@@ -23,10 +22,11 @@ const buildPdf = (eventDetails, hashMapCategories, eventInfo, hashTitle) => {
   doc.setFontSize(15);
   doc.text('פרטים :', maxRightPage + 10, topPage + 40);
   doc.setFontSize(12);
-  const rowss = buildRowEventInfo(eventInfo, hashTitle);
+  const rowsFirstTable = buildRowEventInfo(eventInfo, hashTitle);
+  const rowsSecendTable = buildRow(eventDetails, hashMapCategories);
 
   doc.autoTable({
-    body: rowss,
+    body: rowsFirstTable,
     styles: { font: 'david', halign: 'right', cellWidth: 'wrap' },
     startY: topPage + 50,
     margin: { left: 210, right: 210 },
@@ -34,24 +34,30 @@ const buildPdf = (eventDetails, hashMapCategories, eventInfo, hashTitle) => {
   });
   doc.autoTable({
     head: [['תיאור', 'הערות', 'מוצר', 'קטגוריה']],
-    body: rows,
+    body: rowsSecendTable,
     styles: { font: 'david', halign: 'right' },
     headStyles: { fillColor: '#f5efdf', textColor: 'black' },
-    // startY: doc.autoTable.previous.finalY + 1000,
+    pageBreak: 'avoid',
   });
-  doc.text(
-    'חתימה דיגיטלית :',
-    maxRightPage + 10,
-    doc.autoTable.previous.finalY + 50
-  );
-  if (eventInfo?.sign) {
-    doc.addImage(
-      eventInfo.sign,
-      'png',
+  if (eventInfo && eventInfo.sign && eventInfo?.sign?.length) {
+    doc.text(
+      'חתימה דיגיטלית :',
       maxRightPage + 10,
-      doc.autoTable.previous.finalY + 65,
-      75,
-      75
+      doc.autoTable.previous.finalY + 20
+    );
+    doc.addImage({
+      imageData: eventInfo.sign,
+      format: 'PNG',
+      height: 75,
+      width: 75,
+      x: maxRightPage + 10,
+      y: doc.autoTable.previous.finalY + 25,
+    });
+  } else {
+    doc.text(
+      'אין חתימה דיגיטלית !',
+      maxRightPage + 10,
+      doc.autoTable.previous.finalY + 20
     );
   }
   const arrayBuffer = doc.output('arraybuffer');
@@ -63,6 +69,9 @@ const buildPdf = (eventDetails, hashMapCategories, eventInfo, hashTitle) => {
 const buildRowEventInfo = (eventInfo, hashTitle) => {
   const rows = [];
   Object.keys(hashTitle).forEach((englishTitle) => {
+    if (englishTitle === 'sign') {
+      return;
+    }
     if (eventInfo[englishTitle] && eventInfo[englishTitle].match('.*[a-z].*')) {
       hashTitle[englishTitle] = fix(hashTitle[englishTitle]);
       eventInfo[englishTitle] = fix(eventInfo[englishTitle]);
@@ -71,8 +80,8 @@ const buildRowEventInfo = (eventInfo, hashTitle) => {
       return;
     }
     rows.push([
-      `${hashTitle[englishTitle]}  ${
-        eventInfo[englishTitle] ? eventInfo[englishTitle] : ''
+      `${hashTitle[englishTitle].trim()}  ${
+        eventInfo[englishTitle] ? eventInfo[englishTitle].trim() : ''
       } `,
     ]);
   });
@@ -87,10 +96,10 @@ const buildRow = (eventDetails, hashMapCategories) => {
         eventDetails[categoryIdHashMap][productId];
       if (autoAdd) return;
       rows.push([
-        description,
-        comment,
-        productName,
-        hashMapCategories[categoryId].dataValues.displayName,
+        description.trim(),
+        comment.trim(),
+        productName.trim(),
+        hashMapCategories[categoryId].dataValues.displayName.trim(),
       ]);
     });
   });
