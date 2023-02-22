@@ -11,12 +11,12 @@ class ProductGnService {
           'description',
           'categoryId',
           'autoAdd',
+          'photos',
         ],
       };
       if (Object.keys(query).length) {
         options.where = { ...query };
       }
-
       return await db.ProductGn.findAll({ ...options });
     } catch (error) {
       console.error({
