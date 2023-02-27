@@ -44,6 +44,7 @@ const EventDeatilsController = require('./api/gannay-eylon-api/eventDetails/even
 const EventDeatilsRoute = require('./api/gannay-eylon-api/eventDetails/eventDetails.routes');
 const app = express();
 const http = require('http').createServer(app);
+const bodyParser = require('body-parser');
 
 app.use(
   cors({
@@ -65,6 +66,9 @@ const session = expressSession({
 app.use(session);
 app.use(express.json());
 app.all('*', setupAsyncLocalStorage);
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const port = process.env.PORT || 3030;
 
