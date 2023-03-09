@@ -43,7 +43,7 @@ const buildPdf = (eventDetails, hashMapCategories, eventInfo, hashTitle) => {
     doc.text(
       'חתימה דיגיטלית :',
       maxRightPage + 10,
-      doc.autoTable.previous.finalY + 20
+      doc.autoTable.previous.finalY + 10
     );
     doc.addImage({
       imageData: eventInfo.sign,
@@ -51,13 +51,13 @@ const buildPdf = (eventDetails, hashMapCategories, eventInfo, hashTitle) => {
       height: 75,
       width: 75,
       x: maxRightPage + 10,
-      y: doc.autoTable.previous.finalY + 25,
+      y: doc.autoTable.previous.finalY + 15,
     });
   } else {
     doc.text(
       'אין חתימה דיגיטלית !',
       maxRightPage + 10,
-      doc.autoTable.previous.finalY + 20
+      doc.autoTable.previous.finalY + 10
     );
   }
   const arrayBuffer = doc.output('arraybuffer');
@@ -80,8 +80,8 @@ const buildRowEventInfo = (eventInfo, hashTitle) => {
       return;
     }
     rows.push([
-      `${hashTitle[englishTitle].trim()}  ${
-        eventInfo[englishTitle] ? eventInfo[englishTitle].trim() : ''
+      `${hashTitle[englishTitle]?.trim()}  ${
+        eventInfo[englishTitle] ? eventInfo[englishTitle]?.trim() : ''
       } `,
     ]);
   });
@@ -94,12 +94,12 @@ const buildRow = (eventDetails, hashMapCategories) => {
     return Object.keys(eventDetails[categoryIdHashMap]).forEach((productId) => {
       const { productName, description, categoryId, comment, autoAdd } =
         eventDetails[categoryIdHashMap][productId];
-      if (autoAdd) return;
+      if (autoAdd && !comment?.length) return;
       rows.push([
-        description.trim(),
-        comment.trim(),
-        productName.trim(),
-        hashMapCategories[categoryId].dataValues.displayName.trim(),
+        description?.trim(),
+        comment?.trim(),
+        productName?.trim(),
+        hashMapCategories[categoryId].dataValues.displayName?.trim(),
       ]);
     });
   });
