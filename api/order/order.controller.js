@@ -24,5 +24,14 @@ class OrderController {
       console.log('[Error] : Get Orders By Date :', error);
     }
   };
+  getOrderSpasificDate = async (req, res) => {
+    try {
+      const { date } = req.query;
+      const orders = await this.orderService.getOrderSpasificDate(date);
+      res.send(orders);
+    } catch (error) {
+      console.log('[Error] : Get Orders By Date :', error);
+    }
+  };
 }
 module.exports = OrderController;

@@ -7,12 +7,26 @@ class OrderRoute {
     this.app = app;
     this.get();
     this.getByDates();
+    this.getByDate();
   }
   get() {
     this.app.get(orderUrl, log, parseQueryParm, this.OrderController.getOrder);
   }
   getByDates() {
-    this.app.get(orderUrl + 'getOrdersByDate', log, parseQueryParm, this.OrderController.getOrdersByDate);
+    this.app.get(
+      orderUrl + 'getOrdersByDate',
+      log,
+      parseQueryParm,
+      this.OrderController.getOrdersByDate
+    );
+  }
+  getByDate() {
+    this.app.get(
+      orderUrl + 'getOrderSpasificDate',
+      log,
+      parseQueryParm,
+      this.OrderController.getOrderSpasificDate
+    );
   }
 }
 
