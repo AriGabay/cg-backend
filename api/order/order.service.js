@@ -46,7 +46,7 @@ class OrderService {
     const totalProducts = {};
     const results = await db.Order.findAll({
       attributes: ['id', 'order'],
-      where: { order: { [Op.like]: `%${date}%` } },
+      where: { order: { [Op.like]: `%"pickUpDate":"${date}"%` } },
       raw: true,
     });
     if (!results || !results.length) return { order: [], totalProducts: {} };
