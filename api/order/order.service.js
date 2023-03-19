@@ -58,8 +58,13 @@ class OrderService {
         if (product) {
           if (!totalProducts[product.id]) {
             totalProducts[product.id] = { ...product };
+            totalProducts[
+              product.id
+            ].total = `${product.sizeToOrder} - ${product.Price.priceType} \n`;
           } else {
-            totalProducts[product.id].sizeToOrder += product.sizeToOrder;
+            totalProducts[
+              product.id
+            ].total += `${product.sizeToOrder} - ${product.Price.priceType} \n`;
           }
         }
       });
