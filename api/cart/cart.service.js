@@ -75,10 +75,10 @@ class CartService {
       return `${product.sizeToOrder} גרם`;
     }
   }
-  async updateOrder(orderId, order, products) {
-    console.log(orderId, order, products);
+  async updateOrder(orderId, order, productsReq) {
+    console.log(orderId, order, productsReq);
     order.order.totalPrice = 0;
-    const productsCalc = products.map((product) => {
+    const productsCalc = productsReq.map((product) => {
       let pricePerSize = 0;
       const sizeToOrder = product.sizeToOrder;
       if (product.Price.priceType === 'weight') {
@@ -125,6 +125,16 @@ class CartService {
           id: orderId,
         },
       }
+    );
+    const { products, ...userDetails } = order.order;
+    const htmlForEmail = buildHtml(orderId, userDetails, order.order);
+    const bufferPdf = buildPdf(orderId, userDetails, order.order);
+    await emailService.sendMail(
+      'עדכון הזמנה קייטרינג גבאי',
+      htmlForEmail,
+      userDetails.email,
+      bufferPdf,
+      orderId
     );
   }
 }
