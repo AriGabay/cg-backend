@@ -76,7 +76,6 @@ class CartService {
     }
   }
   async updateOrder(orderId, order, productsReq) {
-    console.log(orderId, order, productsReq);
     order.order.totalPrice = 0;
     const productsCalc = productsReq.map((product) => {
       let pricePerSize = 0;
@@ -112,12 +111,10 @@ class CartService {
         : (order.order.totalPrice = pricePerSize);
       return product;
     });
-    console.log('productsCalc', productsCalc);
     order.order.products = [...productsCalc];
     order.order.Tax = +(order.order.totalPrice * 0.17).toFixed(2);
     order.order.unTax = +(order.order.totalPrice * 0.83).toFixed(2);
     order.order.totalPrice = +order.order.totalPrice.toFixed(2);
-    console.log('order', order);
     await db.Order.update(
       { order: JSON.stringify(order.order) },
       {

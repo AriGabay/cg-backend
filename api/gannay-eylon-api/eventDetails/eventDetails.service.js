@@ -63,7 +63,6 @@ class eventDetailsService {
     }
     try {
       const eventDetailsDb = await db.EventDetails.findOne({ ...options });
-      console.log('eventDetailsDb', eventDetailsDb);
       await eventDetailsDb.update({
         eventDetails: JSON.stringify(eventDetails),
         eventInfo: JSON.stringify(eventInfo),
