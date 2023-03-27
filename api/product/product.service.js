@@ -19,12 +19,18 @@ class ProductService {
   ) {
     try {
       const includeConfig = [
-        { model: sequelize.model('Category'), attributes: subAttributesCategory },
+        {
+          model: sequelize.model('Category'),
+          attributes: subAttributesCategory,
+        },
         {
           model: sequelize.model('Price'),
           attributes: subAttributesPrice,
-          include: { model: sequelize.model('SizePrice'), attributes: subAttributesSizePrice }
-        }
+          include: {
+            model: sequelize.model('SizePrice'),
+            attributes: subAttributesSizePrice,
+          },
+        },
       ];
       if (query.pathName) {
         const { pathName, page, ...queryOnly } = query;
@@ -41,14 +47,14 @@ class ProductService {
           where: { ...queryOnly },
           include: includeConfig ? includeConfig : undefined,
           raw: raw,
-          attributes: attributes
+          attributes: attributes,
         });
       } else if (query.id) {
         return await db.Product.findOne({
           where: { ...query },
           include: includeConfig ? includeConfig : undefined,
           raw: raw,
-          attributes: attributes
+          attributes: attributes,
         });
       }
     } catch (error) {
@@ -62,8 +68,8 @@ class ProductService {
         { ...dataToEdit },
         {
           where: {
-            id
-          }
+            id,
+          },
         }
       );
     } catch (error) {
@@ -74,12 +80,30 @@ class ProductService {
   async removeProduct(id) {
     return await db.Product.destroy({
       where: {
-        id
-      }
+        id,
+      },
     });
   }
-  async getAllProducts() {
-    return await db.Product.findAll();
+  async getAllProducts(
+    subAttributesCategory = { exclude: ['createdAt', 'updatedAt'] },
+    subAttributesPrice = { exclude: ['createdAt', 'updatedAt'] },
+    subAttributesSizePrice = { exclude: ['createdAt', 'updatedAt'] }
+  ) {
+    const includeConfig = [
+      {
+        model: sequelize.model('Category'),
+        attributes: subAttributesCategory,
+      },
+      {
+        model: sequelize.model('Price'),
+        attributes: subAttributesPrice,
+        include: {
+          model: sequelize.model('SizePrice'),
+          attributes: subAttributesSizePrice,
+        },
+      },
+    ];
+    return await db.Product.findAll({ include: [...includeConfig] });
   }
 }
 

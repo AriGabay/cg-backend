@@ -79,11 +79,7 @@ class ProductController {
   };
   getAllProducts = async (req, res) => {
     try {
-      const { include, ...query } = req.query;
-      const products = await this.productService.getAllProducts(
-        { ...query },
-        include ?? false
-      );
+      const products = await this.productService.getAllProducts();
       if (products && products.length) {
         res.send(products);
       } else {

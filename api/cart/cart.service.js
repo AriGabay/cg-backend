@@ -75,6 +75,58 @@ class CartService {
       return `${product.sizeToOrder} גרם`;
     }
   }
+  async updateOrder(orderId, order, products) {
+    console.log(orderId, order, products);
+    order.order.totalPrice = 0;
+    const productsCalc = products.map((product) => {
+      let pricePerSize = 0;
+      const sizeToOrder = product.sizeToOrder;
+      if (product.Price.priceType === 'weight') {
+        if (product.Price.SizePrices[0].size) {
+          pricePerSize =
+            (sizeToOrder / 100) * product.Price.SizePrices[0].amount;
+        } else {
+          throw new Error('product size must be = 100');
+        }
+      } else if (product.Price.priceType === 'box') {
+        if (product.Price.SizePrices.length > 0) {
+          const [size] = product.Price.SizePrices.filter(
+            (sizePrice) => sizePrice.size === sizeToOrder
+          );
+          pricePerSize = size.amount;
+        } else {
+          throw new Error('product size empty');
+        }
+      } else if (product.Price.priceType === 'unit') {
+        if (product.Price.SizePrices[0].size > 0) {
+          pricePerSize =
+            product.Price.SizePrices[0].amount *
+            (sizeToOrder / product.Price.SizePrices[0].size);
+        } else {
+          throw new Error('product size need big from 0');
+        }
+      }
+      product.pricePerSize = pricePerSize;
+      order.order.totalPrice
+        ? (order.order.totalPrice += pricePerSize)
+        : (order.order.totalPrice = pricePerSize);
+      return product;
+    });
+    console.log('productsCalc', productsCalc);
+    order.order.products = [...productsCalc];
+    order.order.Tax = +(order.order.totalPrice * 0.17).toFixed(2);
+    order.order.unTax = +(order.order.totalPrice * 0.83).toFixed(2);
+    order.order.totalPrice = +order.order.totalPrice.toFixed(2);
+    console.log('order', order);
+    await db.Order.update(
+      { order: JSON.stringify(order.order) },
+      {
+        where: {
+          id: orderId,
+        },
+      }
+    );
+  }
 }
 
 module.exports = CartService;

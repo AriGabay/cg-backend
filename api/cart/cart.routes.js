@@ -6,12 +6,24 @@ class CartRoute {
     this.app = app;
     this.post();
     this.postOrder();
+    this.put();
   }
   postOrder() {
-    this.app.post(myUrl + '/sendOrder', parseQueryParm, this.CartController.sendOrder);
+    this.app.post(
+      myUrl + '/sendOrder',
+      parseQueryParm,
+      this.CartController.sendOrder
+    );
   }
   post() {
     this.app.post(myUrl, parseQueryParm, this.CartController.createOrder);
+  }
+  put() {
+    this.app.put(
+      myUrl + '/:id',
+      parseQueryParm,
+      this.CartController.updateOrder
+    );
   }
 }
 

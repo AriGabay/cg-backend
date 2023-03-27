@@ -16,10 +16,18 @@ class ProductRoute {
     this.app.get(myUrl, log, parseQueryParm, this.ProductController.getProduct);
   }
   getAll() {
-    this.app.get(myUrl + '/all', this.ProductController.getAllProducts);
+    this.app.get(
+      myUrl + '/all',
+      parseQueryParm,
+      this.ProductController.getAllProducts
+    );
   }
   getByMenu() {
-    this.app.get(myUrl + '/byMenu', parseQueryParm, this.ProductController.getProductByMenu);
+    this.app.get(
+      myUrl + '/byMenu',
+      parseQueryParm,
+      this.ProductController.getProductByMenu
+    );
   }
   post() {
     this.app.post(myUrl, this.ProductController.createProduct);

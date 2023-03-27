@@ -24,5 +24,19 @@ class cartController {
       console.log('[SEND_ORDER] error:', error);
     }
   };
+  updateOrder = async (req, res) => {
+    try {
+      const orderId = req.params.id;
+      const { order, products } = req.body;
+      const totalCart = await this.cartService.updateOrder(
+        orderId,
+        order,
+        products
+      );
+      res.send(totalCart);
+    } catch (error) {
+      console.log('[SEND_ORDER] error:', error);
+    }
+  };
 }
 module.exports = cartController;
