@@ -42,8 +42,8 @@ class ProductService {
           Object.assign(queryOnly, { isMenuPesach: true });
         }
         return await db.Product.findAll({
-          limit: 6,
-          offset: page * 6,
+          limit: 10,
+          offset: page * 10,
           where: { ...queryOnly },
           include: includeConfig ? includeConfig : undefined,
           raw: raw,
