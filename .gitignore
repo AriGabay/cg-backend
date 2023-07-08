@@ -125,3 +125,5 @@ BaltimoreCyberTrustRoot.crt.pem
 ./pdfs
 .idea
 .vscode
+
+local-index.js
