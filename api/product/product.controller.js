@@ -89,5 +89,17 @@ class ProductController {
       res.status(404).send({ error: true, message: error?.message ?? error });
     }
   };
+  getProductSerach = async (req, res) => {
+    try {
+      const products = await this.productService.getProductSerach(req.query);
+      if (products && products.length) {
+        res.send(products);
+      } else {
+        throw Error('No product found');
+      }
+    } catch (error) {
+      res.status(404).send({ error: true, message: error?.message ?? error });
+    }
+  };
 }
 module.exports = ProductController;

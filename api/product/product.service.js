@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { sequelize } = require('../../models/index');
 const db = require('../../models/index');
 class ProductService {
@@ -104,6 +105,38 @@ class ProductService {
       },
     ];
     return await db.Product.findAll({ include: [...includeConfig] });
+  }
+  async getProductSerach({ value, menuTypeSerch }) {
+    try {
+      return await db.Product.findAll({
+        where: {
+          [Op.or]: [
+            { displayName: { [Op.like]: `%${value}%` } },
+            { description: { [Op.like]: `%${value}%` } },
+          ],
+          [`${menuTypeSerch}`]: 1,
+        },
+        raw: true,
+        order: [['displayName', 'ASC']],
+        attributes: {
+          exclude: [
+            'createdAt',
+            'updatedAt',
+            'priceId',
+            'kitniyot',
+            'imgUrl',
+            'inStock',
+            'categoryId',
+            'isMenuWeekend',
+            'isMenuPesach',
+            'isMenuTishray',
+            'description',
+          ],
+        },
+      });
+    } catch (error) {
+      console.error({ error: true, message: error?.message ?? error });
+    }
   }
 }
 

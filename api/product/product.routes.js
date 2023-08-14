@@ -11,6 +11,7 @@ class ProductRoute {
     this.remove();
     this.getAll();
     this.getByMenu();
+    this.getBySerach();
   }
   get() {
     this.app.get(myUrl, log, parseQueryParm, this.ProductController.getProduct);
@@ -27,6 +28,13 @@ class ProductRoute {
       myUrl + '/byMenu',
       parseQueryParm,
       this.ProductController.getProductByMenu
+    );
+  }
+  getBySerach() {
+    this.app.get(
+      myUrl + '/serach',
+      parseQueryParm,
+      this.ProductController.getProductSerach
     );
   }
   post() {
