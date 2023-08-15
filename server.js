@@ -3,7 +3,6 @@ const cors = require('cors');
 let db;
 let dbGannayEyalon;
 if (process.env.NODE_ENV === 'production') {
-  console.log('innnnnn proddddd');
   db = require('./models/index');
   dbGannayEyalon = require('./models-gannay-eylon/index');
 } else {

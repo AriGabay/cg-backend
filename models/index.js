@@ -7,6 +7,8 @@ const basename = path.basename(__filename);
 const db = {};
 const dotenv = require('dotenv');
 dotenv.config();
+console.log('innnnnn proddddd');
+
 const envVars = Object.keys(process.env)
   .filter((key) => key.includes('DB_'))
   .map((key) => `${key}:${process.env[key]};`)
