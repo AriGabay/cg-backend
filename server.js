@@ -11,6 +11,7 @@ if (process.env.NODE_ENV === 'production') {
   db = require('./models/local-index');
   dbGannayEyalon = require('./models-gannay-eylon/local-index');
 }
+
 const expressSession = require('express-session');
 const CategoryService = require('./api/category/category.service');
 const CategoryController = require('./api/category/category.controller');
