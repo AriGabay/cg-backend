@@ -39,6 +39,7 @@ fs.readdirSync(__dirname)
     );
   })
   .forEach((file) => {
+    if (path.join(__dirname, file).includes('local-index.js')) return;
     const model = require(path.join(__dirname, file))(
       sequelize,
       Sequelize.DataTypes

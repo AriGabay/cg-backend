@@ -1,7 +1,16 @@
 const express = require('express');
 const cors = require('cors');
-const db = require('./models/index');
-const dbGannayEyalon = require('./models-gannay-eylon/index');
+let db;
+let dbGannayEyalon;
+if (process.env.NODE_ENV === 'production') {
+  console.log('innnnnn proddddd');
+  db = require('./model/index');
+  dbGannayEyalon = require('./models-gannay-eylon/index');
+} else {
+  console.log('innnnnn devvvvvv');
+  db = require('./models/local-index');
+  dbGannayEyalon = require('./models-gannay-eylon/local-index');
+}
 const expressSession = require('express-session');
 const CategoryService = require('./api/category/category.service');
 const CategoryController = require('./api/category/category.controller');

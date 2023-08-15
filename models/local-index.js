@@ -19,6 +19,7 @@ const sequelize = new Sequelize(
   {
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
+    port: 3307,
     define: {
       charset: 'utf8',
       collate: 'utf8_general_ci',
@@ -28,6 +29,7 @@ const sequelize = new Sequelize(
       ssl: Boolean(Number(process.env.USE_SSL)),
       charset: 'utf8',
       collate: 'utf8_general_ci',
+      allowPublicKeyRetrieval: true,
     },
   }
 );
@@ -39,8 +41,7 @@ fs.readdirSync(__dirname)
     );
   })
   .forEach((file) => {
-    console.log('path.join(__dirname, file)', path.join(__dirname, file));
-    if (path.join(__dirname, file).includes('local-index.js')) return;
+    if (path.join(__dirname, file).includes('index.js')) return;
     const model = require(path.join(__dirname, file))(
       sequelize,
       Sequelize.DataTypes
