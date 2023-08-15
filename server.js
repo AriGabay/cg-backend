@@ -4,7 +4,7 @@ let db;
 let dbGannayEyalon;
 if (process.env.NODE_ENV === 'production') {
   console.log('innnnnn proddddd');
-  db = require('./model/index');
+  db = require('./models/index');
   dbGannayEyalon = require('./models-gannay-eylon/index');
 } else {
   console.log('innnnnn devvvvvv');
