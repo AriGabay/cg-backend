@@ -7,18 +7,31 @@ const basename = path.basename(__filename);
 const db = {};
 const dotenv = require('dotenv');
 dotenv.config();
-console.log('innnnnn proddddd');
+let options;
+console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
-const envVars = Object.keys(process.env)
-  .filter((key) => key.includes('DB_'))
-  .map((key) => `${key}:${process.env[key]};`)
-  .reduce((lastVal, currVal) => lastVal + currVal, '');
-console.log(envVars);
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
-  {
+if (
+  process.env.NODE_ENV &&
+  !!process.env.NODE_ENV.length &&
+  process.env.NODE_ENV.toLowerCase() === 'development'
+) {
+  options = {
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+    define: {
+      charset: 'utf8',
+      collate: 'utf8_general_ci',
+    },
+    charset: 'utf8',
+    dialectOptions: {
+      ssl: Boolean(Number(process.env.USE_SSL)),
+      charset: 'utf8',
+      collate: 'utf8_general_ci',
+      allowPublicKeyRetrieval: true,
+    },
+  };
+} else {
+  options = {
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
     define: {
@@ -31,7 +44,13 @@ const sequelize = new Sequelize(
       charset: 'utf8',
       collate: 'utf8_general_ci',
     },
-  }
+  };
+}
+const sequelize = new Sequelize(
+  `mariadb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${
+    process.env.DB_HOST
+  }:${3307}/${process.env.DB_NAME}`,
+  { ...options }
 );
 
 fs.readdirSync(__dirname)
