@@ -70,11 +70,6 @@ app.all('*', setupAsyncLocalStorage);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  res.setHeader('X-Robots-Tag', 'index, follow');
-  next();
-});
-
 const port = process.env.PORT || 3030;
 
 db.sequelize.sync().then(() => {
