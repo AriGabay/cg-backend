@@ -6,6 +6,12 @@ class authRoute {
     this.postLogin();
     this.postSignUp();
     this.verify();
+    this.enableProject();
+  }
+  enableProject() {
+    this.app.get(myUrl + '/', (req, res) => {
+      return res.send(true);
+    });
   }
 
   postLogin() {
