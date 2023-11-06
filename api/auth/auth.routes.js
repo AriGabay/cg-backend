@@ -13,7 +13,6 @@ class authRoute {
       return res.send(true);
     });
   }
-
   postLogin() {
     this.app.post(myUrl + '/login', this.authController.login);
   }
