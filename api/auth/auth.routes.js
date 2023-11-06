@@ -8,11 +8,13 @@ class authRoute {
     this.verify();
     this.enableProject();
   }
+
   enableProject() {
     this.app.get(myUrl + '/', (req, res) => {
       return res.send(true);
     });
   }
+
   postLogin() {
     this.app.post(myUrl + '/login', this.authController.login);
   }
