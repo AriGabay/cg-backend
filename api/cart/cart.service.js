@@ -68,8 +68,9 @@ class CartService {
   }
   checkPriceType(product) {
     if (product.Price.priceType === 'box') {
-      if (product.categoryId === 1 || product.categoryId == '1')
+      if (product.categoryId === 1 || product.categoryId == '1') {
         return `קופסה של ${product.sizeToOrder} מליליטר`;
+      }
       return `קופסה של ${product.sizeToOrder} גרם`;
     } else if (product.Price.priceType === 'unit') {
       return `יחידות ${product.sizeToOrder}`;

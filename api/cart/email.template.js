@@ -206,8 +206,14 @@ const buildHtml = (orderId, userDetails, cart) => {
           <p class="label">לקוח:</p>
           <p>
           ${userDetails.firstName} ${userDetails.lastName}<br>
-          ${userDetails.mobile.substring(0, 3)}-${userDetails.mobile.substring(3, userDetails.mobile.length + 1)}<br>
-          ${userDetails.mobileTow.substring(0, 3)}-${userDetails.mobileTow.substring(
+          ${userDetails.mobile.substring(0, 3)}-${userDetails.mobile.substring(
+    3,
+    userDetails.mobile.length + 1
+  )}<br>
+          ${userDetails.mobileTow.substring(
+            0,
+            3
+          )}-${userDetails.mobileTow.substring(
     3,
     userDetails.mobile.length + 1
   )}<br>
@@ -286,7 +292,10 @@ const buildHtml = (orderId, userDetails, cart) => {
 
 const checkPriceType = (product) => {
   if (product.Price.priceType === 'box') {
-    return `קופסה ${product.sizeToOrder} גרם`;
+    if (product.categoryId === 1 || product.categoryId == '1') {
+      return `קופסה של ${product.sizeToOrder} מליליטר`;
+    }
+    return `קופסה של ${product.sizeToOrder} גרם`;
   } else if (product.Price.priceType === 'unit') {
     return `יחידות ${product.sizeToOrder}`;
   } else if (product.Price.priceType === 'weight') {
@@ -295,5 +304,5 @@ const checkPriceType = (product) => {
 };
 
 module.exports = {
-  buildHtml
+  buildHtml,
 };
