@@ -28,7 +28,7 @@ const buildPdf = (orderId, userDetails, cart) => {
       [userDetails.city, 'עיר :'],
       [userDetails.street, `רחוב :`],
       [fix(userDetails.pickUpDate), 'תאריך איסוף :'],
-      [fix(userDetails.pickup), 'שעת איסוף :']
+      [fix(userDetails.pickup), 'שעת איסוף :'],
     ];
 
     doc.autoTable({
@@ -36,13 +36,13 @@ const buildPdf = (orderId, userDetails, cart) => {
       styles: { font: 'david', halign: 'right', cellWidth: 'wrap' },
       startY: topPage + 50,
       margin: { left: 210, right: 210 },
-      tableWidth: 150
+      tableWidth: 150,
     });
     doc.autoTable({
       head: [['מחיר', 'כמות', 'מוצר']],
       body: rows,
       styles: { font: 'david', halign: 'right' },
-      startY: 250
+      startY: 250,
     });
     const arrayBuffer = doc.output('arraybuffer');
     const buffer = Buffer.from(arrayBuffer);
@@ -54,7 +54,11 @@ const buildPdf = (orderId, userDetails, cart) => {
 
 const buildRow = (cart) => {
   const rows = cart.products.map((product) => {
-    return [fix(`${product.pricePerSize.toFixed(2)} ₪`), checkPriceType(product), product.displayName];
+    return [
+      fix(`${product.pricePerSize.toFixed(2)} ₪`),
+      checkPriceType(product),
+      product.displayName,
+    ];
   });
   rows.push([fix(`${cart.totalPrice.toFixed(2)} ₪`), '', 'סה״כ']);
   return rows;
@@ -68,7 +72,10 @@ const fix = (str) => {
 
 const checkPriceType = (product) => {
   if (product.Price.priceType === 'box') {
-    return `קופסה ${product.sizeToOrder} גרם`;
+    if (product.categoryId === 1 || product.categoryId == '1') {
+      return `קופסה של ${product.sizeToOrder} מליליטר`;
+    }
+    return `קופסה של ${product.sizeToOrder} גרם`;
   } else if (product.Price.priceType === 'unit') {
     return `יחידות ${product.sizeToOrder}`;
   } else if (product.Price.priceType === 'weight') {
@@ -77,5 +84,5 @@ const checkPriceType = (product) => {
 };
 
 module.exports = {
-  buildPdf
+  buildPdf,
 };
