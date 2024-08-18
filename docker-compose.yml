@@ -3,8 +3,8 @@ services:
     image: mariadb
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: catering-gabay
-      MYSQL_DATABASE: catering-gabay
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     volumes:
       - db-volume:/var/lib/mysql
     ports:
@@ -17,4 +17,3 @@ services:
       - 8080:8080
 volumes:
   db-volume:
-#

@@ -127,3 +127,4 @@ BaltimoreCyberTrustRoot.crt.pem
 .vscode
 
 local-index.js
+docker-compose-local.yml
