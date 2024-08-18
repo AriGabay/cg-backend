@@ -68,6 +68,8 @@ class CartService {
   }
   checkPriceType(product) {
     if (product.Price.priceType === 'box') {
+      if (product.categoryId === 1 || product.categoryId == '1')
+        return `קופסה של ${product.sizeToOrder} מליליטר`;
       return `קופסה של ${product.sizeToOrder} גרם`;
     } else if (product.Price.priceType === 'unit') {
       return `יחידות ${product.sizeToOrder}`;
@@ -123,6 +125,7 @@ class CartService {
         },
       }
     );
+    // eslint-disable-next-line no-unused-vars
     const { products, ...userDetails } = order.order;
     const htmlForEmail = buildHtml(orderId, userDetails, order.order);
     const bufferPdf = buildPdf(orderId, userDetails, order.order);

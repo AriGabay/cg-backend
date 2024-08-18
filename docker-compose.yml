@@ -17,4 +17,51 @@ services:
       - 8080:8080
 volumes:
   db-volume:
-#
+# version: '3'
+# services:
+#   db:
+#     image: mariadb
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: catering-gabay
+#       MYSQL_DATABASE: catering-gabay
+#     volumes:
+#       - db-volume:/var/lib/mysql
+#     ports:
+#       - '3306:3306'
+#     networks:
+#       - my-network
+
+#   adminer:
+#     image: adminer
+#     restart: always
+#     ports:
+#       - '8080:8080'
+#     networks:
+#       - my-network
+
+#   app:
+#     image: node
+#     working_dir: /app
+#     volumes:
+#       - .:/app
+#     command: npm start
+#     environment:
+#       DB_USERNAME: root
+#       DB_PASSWORD: catering-gabay
+#       DB_HOST: db
+#       DB_PORT: 3306
+#       DB_NAME: catering-gabay
+#       DB_DIALECT: mariadb
+#       USE_SSL: 0
+#     depends_on:
+#       - db
+#     networks:
+#       - my-network
+
+# volumes:
+#   db-volume:
+
+# networks:
+#   my-network:
+#     driver: bridge
