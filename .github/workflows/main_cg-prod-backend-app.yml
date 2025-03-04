@@ -1,4 +1,41 @@
-name: Azure App Service - cg-prod-backend-app(Production), Build and deploy NodeJS app
+# name: Azure App Service - cg-prod-backend-app(Production), Build and deploy NodeJS app
+
+# on:
+#   pull_request:
+#     types: [closed]
+#     branches:
+#       - main
+
+# jobs:
+#   build-and-deploy:
+#     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       # checkout the repo
+#       - name: 'Checkout Github Action'
+#         uses: actions/checkout@v2
+
+#       - name: Set up Node.js version
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: '16.x'
+
+#       - name: npm install, build, and test
+#         run: |
+#           npm install
+#           npm run build --if-present
+#           npm run test --if-present
+
+#       - name: Run Azure webapp deploy action using publish profile credentials
+#         uses: azure/webapps-deploy@v2
+#         with:
+#           app-name: cg-prod-backend-app
+#           slot-name: Production
+#           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AD1D491AA9A846D99E64F45FAE011B55 }}
+#           package: .
+
+name: Azure App Service - cg-prod-backend-app (Production), Build and deploy NodeJS app
 
 on:
   pull_request:
@@ -14,16 +51,16 @@ jobs:
     steps:
       # checkout the repo
       - name: 'Checkout Github Action'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js version
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '20.x'
 
       - name: npm install, build, and test
         run: |
-          npm install
+          npm install --legacy-peer-deps  # ✅ שימוש באופציה למניעת קונפליקטים
           npm run build --if-present
           npm run test --if-present
 
