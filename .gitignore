@@ -128,3 +128,4 @@ BaltimoreCyberTrustRoot.crt.pem
 
 local-index.js
 docker-compose-local.yml
+.DS_Store
