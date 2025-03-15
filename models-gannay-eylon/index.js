@@ -78,5 +78,5 @@ Object.keys(dbGannayEyalon).forEach((modelName) => {
 
 dbGannayEyalon.sequelize = sequelize;
 dbGannayEyalon.Sequelize = Sequelize;
-
+//
 module.exports = dbGannayEyalon;
