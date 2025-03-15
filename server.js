@@ -77,61 +77,64 @@ app.use((req, res, next) => {
 
 const port = process.env.PORT || 3030;
 
-db.sequelize.sync().then(() => {
-  const categoryService = new CategoryService();
-  const categoryController = new CategoryController(categoryService);
-  new CategoryRoute(app, categoryController);
+async function startServer() {
+  try {
+    console.log('🔹 Connecting to Catering DB...');
+    const dbPromise = db.sequelize.sync();
+    console.log('🔹 Connecting to Gannay Eyalon DB...');
+    const dbGannayPromise = dbGannayEyalon.sequelize.sync();
+    await Promise.all([dbPromise, dbGannayPromise]);
+    const categoryService = new CategoryService();
+    const categoryController = new CategoryController(categoryService);
+    new CategoryRoute(app, categoryController);
+    const productService = new ProductService();
+    const productController = new ProductController(productService);
+    new ProductRoute(app, productController);
+    const priceService = new PriceService();
+    const priceController = new PriceController(priceService);
+    new PriceRoute(app, priceController);
+    const sizePriceService = new SizePriceService();
+    const sizePriceController = new SizePriceController(sizePriceService);
+    new SizePriceRoute(app, sizePriceController);
+    const cartService = new CartService();
+    const cartController = new CartController(cartService);
+    new CartRoute(app, cartController);
+    const orderService = new OrderService();
+    const orderController = new OrderController(orderService);
+    new OrderRoute(app, orderController);
+    const isMenuEnableService = new IsMenuEnableService();
+    const isMenuEnableController = new IsMenuEnableController(
+      isMenuEnableService
+    );
+    new IsMenuEnabletRoute(app, isMenuEnableController);
+    const authService = new AuthService();
+    const authController = new AuthController(
+      authService,
+      bcryptjs,
+      jwt,
+      logger
+    );
+    new AuthRoute(app, authController);
+    // מסדי הנתונים מחוברים, אפשר להפעיל את המסלולים של גני אילון
+    const productGnService = new ProductGnService();
+    const productGnController = new ProductGnController(productGnService);
+    new ProductGnRoute(app, productGnController);
+    const categoryGnService = new CategoryGnService();
+    const categoryGnController = new CategoryGnController(categoryGnService);
+    new CategoryGnRoute(app, categoryGnController);
+    const eventDeatilsService = new EventDeatilsService();
+    const eventDeatilsController = new EventDeatilsController(
+      eventDeatilsService,
+      categoryGnService
+    );
+    new EventDeatilsRoute(app, eventDeatilsController);
+    // הפעלת השרת
+    http.listen(port, () => {
+      logger.info(`✅ Server is running on port: ${port}`);
+    });
+  } catch (error) {
+    console.error('❌ Error connecting to databases:', error);
+  }
+}
 
-  const productService = new ProductService();
-  const productController = new ProductController(productService);
-  new ProductRoute(app, productController);
-
-  const priceService = new PriceService();
-  const priceController = new PriceController(priceService);
-  new PriceRoute(app, priceController);
-
-  const sizePriceService = new SizePriceService();
-  const sizePriceController = new SizePriceController(sizePriceService);
-  new SizePriceRoute(app, sizePriceController);
-
-  const cartService = new CartService();
-  const cartController = new CartController(cartService);
-  new CartRoute(app, cartController);
-
-  const orderService = new OrderService();
-  const orderController = new OrderController(orderService);
-  new OrderRoute(app, orderController);
-
-  const isMenuEnableService = new IsMenuEnableService();
-  const isMenuEnableController = new IsMenuEnableController(
-    isMenuEnableService
-  );
-  new IsMenuEnabletRoute(app, isMenuEnableController);
-
-  const authService = new AuthService();
-  const authController = new AuthController(authService, bcryptjs, jwt, logger);
-  new AuthRoute(app, authController);
-
-  dbGannayEyalon.sequelize
-    .sync()
-    .then(() => {
-      const productGnService = new ProductGnService();
-      const productGnController = new ProductGnController(productGnService);
-      new ProductGnRoute(app, productGnController);
-
-      const categoryGnService = new CategoryGnService();
-      const categoryGnController = new CategoryGnController(categoryGnService);
-      new CategoryGnRoute(app, categoryGnController);
-
-      const eventDeatilsService = new EventDeatilsService();
-      const eventDeatilsController = new EventDeatilsController(
-        eventDeatilsService,
-        categoryGnService
-      );
-      new EventDeatilsRoute(app, eventDeatilsController);
-      http.listen(port, () => {
-        logger.info('Server is running on port: ' + port);
-      });
-    })
-    .catch((err) => console.log('errrrr:', err));
-});
+startServer();

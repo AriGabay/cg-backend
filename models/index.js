@@ -8,6 +8,7 @@ const db = {};
 const dotenv = require('dotenv');
 dotenv.config();
 let options;
+let sequelize;
 console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
 if (
@@ -30,6 +31,10 @@ if (
       allowPublicKeyRetrieval: true,
     },
   };
+  sequelize = new Sequelize(
+    `mariadb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:3307/${process.env.DB_NAME}`,
+    { ...options }
+  );
 } else {
   options = {
     host: process.env.DB_HOST,
@@ -45,11 +50,11 @@ if (
       collate: 'utf8_general_ci',
     },
   };
+  sequelize = new Sequelize(
+    `mariadb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+    { ...options }
+  );
 }
-const sequelize = new Sequelize(
-  `mariadb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-  { ...options }
-);
 
 fs.readdirSync(__dirname)
   .filter((file) => {
