@@ -106,6 +106,7 @@ async function startServer() {
     const isMenuEnableController = new IsMenuEnableController(
       isMenuEnableService
     );
+    //
     new IsMenuEnabletRoute(app, isMenuEnableController);
     const authService = new AuthService();
     const authController = new AuthController(

@@ -10,7 +10,7 @@ dotenv.config();
 let options;
 let sequelize;
 console.log('process.env.NODE_ENV', process.env.NODE_ENV);
-
+//
 if (
   process.env.NODE_ENV &&
   !!process.env.NODE_ENV.length &&
