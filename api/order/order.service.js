@@ -23,7 +23,13 @@ class OrderService {
       const startDay = new Date(dates.start);
       const endDay = new Date(dates.end);
       const orders = await db.Order.findAll({
-        where: { createdAt: { [Op.between]: [startDay, endDay] } },
+        where: db.Sequelize.where(
+          db.Sequelize.fn('STR_TO_DATE',
+            db.Sequelize.fn('JSON_UNQUOTE', db.Sequelize.fn('JSON_EXTRACT', db.Sequelize.col('order'), '$.pickUpDate')),
+            '%d/%m/%Y'
+          ),
+          { [Op.between]: [startDay, endDay] }
+        ),
       });
       orders.forEach((order) => {
         order.order = JSON.parse(order.order);
