@@ -22,10 +22,10 @@ class OrderService {
       const totalProducts = [];
       const startDay = new Date(dates.start);
       const endDay = new Date(dates.end);
+      const fmt = (d) => d.toISOString().split('T')[0];
       const orders = await db.Order.findAll({
-        where: db.Sequelize.where(
-          db.Sequelize.literal("STR_TO_DATE(JSON_UNQUOTE(JSON_EXTRACT(`order`, '$.pickUpDate')), '%d/%m/%Y')"),
-          { [Op.between]: [startDay, endDay] }
+        where: db.Sequelize.literal(
+          `STR_TO_DATE(JSON_UNQUOTE(JSON_EXTRACT(\`order\`, '$.pickUpDate')), '%d/%m/%Y') BETWEEN '${fmt(startDay)}' AND '${fmt(endDay)}'`
         ),
       });
       orders.forEach((order) => {
