@@ -38,6 +38,11 @@
 name: Azure App Service - cg-prod-backend-app (Production), Build and deploy NodeJS app
 
 on:
+  # דחיפה ישירה ל-main גם היא מפעילה דפלוי. עד כה היה כאן pull_request בלבד,
+  # ולכן קומיטים שנדחפו ישירות ל-main נשארו ב-GitHub בלי להגיע לשרת.
+  push:
+    branches:
+      - main
   pull_request:
     types: [closed]
     branches:
@@ -45,7 +50,7 @@ on:
 
 jobs:
   build-and-deploy:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
 
     steps:
@@ -73,6 +78,9 @@ jobs:
           package: .
 
   dependabot_update:
+    # נשאר מוגבל למיזוג PR בלבד, כמו עד היום. בלי התנאי הזה הוספת טריגר ה-push
+    # הייתה גורמת ל-npm update ולדחיפת עדכוני תלויות ל-main בכל דחיפה.
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
