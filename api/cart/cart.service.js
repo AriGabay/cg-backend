@@ -49,12 +49,14 @@ class CartService {
   }
 
   async buildHtml(cart, userDetails) {
+    const { id: orderId } = await db.Order.create({
+      order: JSON.stringify({ ...userDetails, ...cart }),
+    });
+    const htmlForEmail = buildHtml(orderId, userDetails, cart);
+    const bufferPdf = buildPdf(orderId, userDetails, cart);
+    // ההזמנה כבר נשמרה במסד הנתונים בשלב הזה. כישלון במייל לא אמור להיראות
+    // ללקוח ככישלון של ההזמנה כולה - אחרת הוא שולח אותה שוב ונוצרות כפילויות.
     try {
-      const { id: orderId } = await db.Order.create({
-        order: JSON.stringify({ ...userDetails, ...cart }),
-      });
-      const htmlForEmail = buildHtml(orderId, userDetails, cart);
-      const bufferPdf = buildPdf(orderId, userDetails, cart);
       await emailService.sendMail(
         'הזמנה חדשה קייטרינג גבאי',
         htmlForEmail,
@@ -62,8 +64,15 @@ class CartService {
         bufferPdf,
         orderId
       );
+      return { orderId, mailSent: true };
     } catch (error) {
-      console.log('[BUILD_HTML] error:', error);
+      console.error(
+        `[ORDER ${orderId}] ההזמנה נשמרה אך שליחת המייל נכשלה [${
+          error.code || 'UNKNOWN'
+        }]:`,
+        error.message
+      );
+      return { orderId, mailSent: false };
     }
   }
   checkPriceType(product) {

@@ -8,11 +8,35 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.MAIL_USERNAME,
     pass: process.env.MAIL_PASSWORD,
-    clientId: process.env.OAUTH_CLIENTID,
-    clientSecret: process.env.OAUTH_CLIENT_SECRET,
-    refreshToken: process.env.OAUTH_REFRESH_TOKEN,
   },
 });
+
+// בדיקת חיבור ואימות מול Gmail בעליית השרת. לא שולחת מייל - רק מתחברת.
+// נכשל בשקט בעבר: app password שפג תוקפו התגלה רק כשלקוח לא קיבל אישור הזמנה.
+async function verifyMailConnection() {
+  if (!process.env.MAIL_USERNAME || !process.env.MAIL_PASSWORD) {
+    console.error(
+      '❌ [MAIL] MAIL_USERNAME או MAIL_PASSWORD חסרים ב-.env — לא יישלחו מיילים!'
+    );
+    return false;
+  }
+  try {
+    await transporter.verify();
+    console.log('✅ [MAIL] חיבור ל-Gmail תקין');
+    return true;
+  } catch (error) {
+    if (error.code === 'EAUTH') {
+      console.error(
+        '❌ [MAIL] Gmail דחה את פרטי ההתחברות (EAUTH). ה-App Password כנראה בוטל או פג.\n' +
+          '   יש ליצור App Password חדש ב-https://myaccount.google.com/apppasswords\n' +
+          '   ולעדכן את MAIL_PASSWORD בקובץ .env. עד אז לא יישלחו מיילים ללקוחות!'
+      );
+    } else {
+      console.error('❌ [MAIL] בדיקת החיבור ל-Gmail נכשלה:', error.message);
+    }
+    return false;
+  }
+}
 
 async function sendMail(subject, html, to, pdfBuffer, orderId) {
   try {
@@ -30,20 +54,13 @@ async function sendMail(subject, html, to, pdfBuffer, orderId) {
           contentType: 'application/pdf',
         },
       ],
-      auth: {
-        user: process.env.MAIL_USERNAME,
-        refreshToken: process.env.OAUTH_REFRESH_TOKEN,
-        expires: 1484314697598,
-      },
     };
-    transporter.sendMail(mailOptions, async (err) => {
-      if (err) {
-        throw new Error(err);
-      }
-      console.log('Email Sent');
-    });
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email Sent', info.messageId);
+    return info;
   } catch (error) {
     console.error('[Error-send email]: ', error);
+    throw error;
   }
 }
 async function sendMailGn(
@@ -68,24 +85,18 @@ async function sendMailGn(
           contentType: 'application/pdf',
         },
       ],
-      auth: {
-        user: process.env.MAIL_USERNAME,
-        refreshToken: process.env.OAUTH_REFRESH_TOKEN,
-        expires: 1484314697598,
-      },
     };
-    transporter.sendMail(mailOptions, async (err) => {
-      if (err) {
-        throw new Error(err);
-      }
-      console.log('Email Sent');
-    });
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email Sent', info.messageId);
+    return info;
   } catch (error) {
     console.error('[Error-send email]: ', error);
+    throw error;
   }
 }
 
 module.exports = {
   sendMail,
   sendMailGn,
+  verifyMailConnection,
 };

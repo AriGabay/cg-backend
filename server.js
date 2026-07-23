@@ -36,6 +36,7 @@ const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware');
 const logger = require('./services/logger.service');
+const { verifyMailConnection } = require('./services/email.service');
 const CategoryGnService = require('./api/gannay-eylon-api/category/category.service');
 const CategoryGnController = require('./api/gannay-eylon-api/category/category.controller');
 const CategoryGnRoute = require('./api/gannay-eylon-api/category/category.routes');
@@ -129,6 +130,8 @@ async function startServer() {
       categoryGnService
     );
     new EventDeatilsRoute(app, eventDeatilsController);
+    // בדיקת שליחת מיילים - לא חוסמת את עליית השרת, רק מתריעה בלוג
+    verifyMailConnection();
     // הפעלת השרת
     http.listen(port, () => {
       logger.info(`✅ Server is running on port: ${port}`);

@@ -51,7 +51,10 @@ const buildPdf = (orderId, userDetails, cart) => {
     const buffer = Buffer.from(arrayBuffer);
     return buffer;
   } catch (error) {
-    console.log('Error try:', error);
+    // חשוב: לא לבלוע את השגיאה. החזרת undefined גרמה ל-Buffer.from(undefined)
+    // להיזרק אחר כך בתוך email.service ולהסתיר את הסיבה האמיתית.
+    console.error(`[BUILD_PDF] יצירת ה-PDF להזמנה ${orderId} נכשלה:`, error);
+    throw error;
   }
 };
 
