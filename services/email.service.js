@@ -40,9 +40,19 @@ async function verifyMailConnection() {
 
 async function sendMail(subject, html, to, pdfBuffer, orderId) {
   try {
+    // כתובת העסק יושבת ב-cc, ולכן כתובת לקוח ריקה או פגומה לא גורמת לשגיאה:
+    // nodemailer פשוט שולח ל-cc בלבד ומדווח על הצלחה. זו בדיוק התקלה שבה
+    // המייל הגיע רק לעסק. עדיף להיכשל בגלוי מאשר "להצליח" בלי הלקוח.
+    const customerEmail = typeof to === 'string' ? to.trim() : '';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
+      throw new Error(
+        `כתובת המייל של הלקוח חסרה או לא תקינה (${JSON.stringify(to)}) ` +
+          `בהזמנה ${orderId} — המייל לא נשלח.`
+      );
+    }
     const mailOptions = {
       from: process.env.MAIL_USERNAME,
-      to,
+      to: customerEmail,
       cc: process.env.MAIL_USERNAME,
       subject,
       text: 'הזמנה קייטרינג גבאי',
@@ -56,7 +66,24 @@ async function sendMail(subject, html, to, pdfBuffer, orderId) {
       ],
     };
     const info = await transporter.sendMail(mailOptions);
-    console.log('Email Sent', info.messageId);
+    // מתעד מי באמת התקבל בשרת של Gmail, כדי שלא נצטרך לנחש שוב.
+    console.log(
+      `[MAIL] הזמנה ${orderId} | התקבלו: ${
+        (info.accepted || []).join(', ') || 'אף אחד'
+      }${
+        (info.rejected || []).length
+          ? ` | נדחו: ${info.rejected.join(', ')}`
+          : ''
+      } | ${info.messageId}`
+    );
+    if ((info.rejected || []).length) {
+      console.error(
+        `[MAIL] שרת הדואר דחה נמענים בהזמנה ${orderId}:`,
+        info.rejected.join(', '),
+        '|',
+        info.response
+      );
+    }
     return info;
   } catch (error) {
     console.error('[Error-send email]: ', error);
