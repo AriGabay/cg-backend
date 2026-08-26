@@ -24,6 +24,9 @@ const CartRoute = require('./api/cart/cart.routes');
 const IsMenuEnableService = require('./api/isMenuEnable/isMenuEnable.service.js');
 const IsMenuEnableController = require('./api/isMenuEnable/isMenuEnable.controller.js');
 const IsMenuEnabletRoute = require('./api/isMenuEnable/isMenuEnable.routes.js');
+const SiteSettingService = require('./api/siteSetting/siteSetting.service');
+const SiteSettingController = require('./api/siteSetting/siteSetting.controller');
+const SiteSettingRoute = require('./api/siteSetting/siteSetting.routes');
 const AuthService = require('./api/auth/auth.service');
 const AuthController = require('./api/auth/auth.controller');
 const AuthRoute = require('./api/auth/auth.routes');
@@ -109,6 +112,9 @@ async function startServer() {
     );
     //
     new IsMenuEnabletRoute(app, isMenuEnableController);
+    const siteSettingService = new SiteSettingService();
+    const siteSettingController = new SiteSettingController(siteSettingService);
+    new SiteSettingRoute(app, siteSettingController);
     const authService = new AuthService();
     const authController = new AuthController(
       authService,
