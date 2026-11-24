@@ -19,14 +19,12 @@ if (
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
     define: {
-      charset: 'utf8',
-      collate: 'utf8_general_ci',
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_unicode_ci',
     },
-    charset: 'utf8',
+    charset: 'utf8mb4',
     dialectOptions: {
       ssl: Boolean(Number(process.env.USE_SSL)),
-      charset: 'utf8',
-      collate: 'utf8_general_ci',
       allowPublicKeyRetrieval: true,
     },
   };
@@ -39,14 +37,12 @@ if (
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
     define: {
-      charset: 'utf8',
-      collate: 'utf8_general_ci',
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_unicode_ci',
     },
-    charset: 'utf8',
+    charset: 'utf8mb4',
     dialectOptions: {
       ssl: Boolean(Number(process.env.USE_SSL)),
-      charset: 'utf8',
-      collate: 'utf8_general_ci',
     },
   };
   sequelize = new Sequelize(
