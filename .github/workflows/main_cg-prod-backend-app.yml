@@ -50,7 +50,11 @@ on:
 
 jobs:
   build-and-deploy:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
+    # מיזוג PR מפעיל גם push וגם pull_request: closed, ושתי הריצות ניסו לדפלוי
+    # במקביל לאותו App Service - אחת הצליחה והשנייה נפלה ב-Conflict (CODE: 409).
+    # לכן הדפלוי רץ על push ל-main בלבד; אירוע ה-pull_request נשאר כדי להפעיל את
+    # dependabot_update, אבל לא מדפלוי בעצמו.
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
